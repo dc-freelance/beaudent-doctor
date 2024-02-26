@@ -1,0 +1,14 @@
+.tooth {
+    position: relative;
+    display: inline-block;
+    background-color: white;
+    text-align: center;
+    width: 52px;
+    padding: 5px 1px;
+    cursor: pointer;
+    border-radius: 5px;
+    -webkit-transition: box-shadow 0.5s;
+    -o-transition: box-shadow 0.5s;
+    transition: box-shadow 0.5s;
+    margin: 0 2px;
+}

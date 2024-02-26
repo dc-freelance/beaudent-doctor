@@ -1,0 +1,87 @@
+@import "/node_modules/@fortawesome/fontawesome-free/css/all.min.css";
+/* @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"); */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+::-webkit-scrollbar {
+    width: 0px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #c2d2e4;
+}
+
+::-webkit-scrollbar-thumb {
+    height: 30px;
+    background-color: #19743b;
+}
+
+.swal2-title {
+    @apply text-xl;
+}
+
+.swal2-html-container {
+    @apply text-xs 2xl:text-sm;
+}
+div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
+    @apply bg-primary rounded-md text-sm;
+}
+
+div:where(.swal2-container) button:where(.swal2-styled).swal2-cancel {
+    @apply rounded-md text-sm;
+}
+
+div:where(.swal2-container) .swal2-html-container {
+    @apply text-base;
+}
+
+.dataTables_length label {
+    @apply flex items-center;
+}
+
+.dataTables_length label select {
+    width: 3rem;
+    margin: 0 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* SELECT 2 */
+.select2-container--default .select2-selection--single {
+    @apply bg-gray-50 border border-gray-300 rounded-md shadow-none;
+}
+
+.select2-container .select2-selection--single {
+    @apply p-2.5 h-10 flex items-center;
+}
+
+.select2-container--default
+    .select2-selection--single
+    .select2-selection__arrow {
+    @apply h-10;
+}
+
+.select2-container--default
+    .select2-selection--single
+    .select2-selection__rendered {
+    @apply px-0 text-sm;
+}
+
+.select2-container--default .select2-results__option {
+    @apply px-2 py-1 text-sm;
+}
+
+.select2-container--default .select2-results__option[aria-selected="true"] {
+    @apply bg-primary text-white;
+}
+
+.select2-container--default
+    .select2-results__option--highlighted[aria-selected] {
+    @apply bg-primary text-white;
+}
+
+.select2-container {
+    @apply w-full !important;
+}
