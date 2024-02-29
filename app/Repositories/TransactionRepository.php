@@ -93,7 +93,7 @@ class TransactionRepository implements TransactionInterface
         try {
             $reservation = $this->examination->find($data['examination_id'])->reservation;
             $reservation->examination_status = 1;
-            $reservation->status = 'Done';
+            $reservation->status = 'Billing';
             $reservation->save();
         } catch (\Throwable $th) {
             DB::rollBack();

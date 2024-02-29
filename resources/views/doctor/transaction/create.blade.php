@@ -9,7 +9,7 @@
         <x-card-container>
             <div class="flex justify-between">
                 <div>
-                    <h3 class="font-semibold mb-1">Nomor Pembayaran</h3>
+                    <h3 class="font-semibold mb-1">Nomor Pemeriksaan</h3>
                     <p class="text-gray-500">{{ $transactionCode }}</p>
                 </div>
                 <div>
@@ -247,7 +247,7 @@
                 <button id="submitTransaction"
                     class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                     type="submit">
-                    Selesaikan Pembayaran
+                    Selesaikan Pemeriksaan
                 </button>
             @endif
         </div>
@@ -437,7 +437,7 @@
                 $('#submitTransaction').on('click', function(e) {
                     Swal.fire({
                         title: 'Apakah Anda yakin?',
-                        text: "Pembayaran ini akan disimpan!",
+                        text: "Pemeriksaan ini akan disimpan!",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonText: 'Ya, simpan!',
@@ -463,7 +463,7 @@
                                         Swal.fire({
                                             icon: 'success',
                                             title: 'Berhasil',
-                                            text: 'Pembayaran berhasil disimpan',
+                                            text: 'Pemeriksaan berhasil disimpan',
                                             showConfirmButton: false,
                                         });
                                         setTimeout(() => {
@@ -596,7 +596,6 @@
                         if (treatmentSelected.discount_treatment == null) {
                             $('#treatment_discount').val('0');
                             $('#sub_total').val(rupiahFormat(treatmentSelected.price));
-                            return;
                         }
 
                         let discountType = hasDiscount ? treatmentSelected.discount_treatment.discount_type :
