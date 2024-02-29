@@ -49,7 +49,7 @@ class QueueRepository implements QueueInterface
         if ($configShift) {
             $reservations = $this->reservation
                 ->where('request_date', Carbon::now('Asia/Jakarta')->format('Y-m-d'))
-                ->where('status', 'Done')
+                ->where('status', 'Confirm')
                 ->where('request_time', '>=', $configShift->start_time)
                 ->where('request_time', '<=', $configShift->end_time)
                 ->where('examination_status', 0)

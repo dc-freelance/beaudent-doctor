@@ -91,7 +91,7 @@
                                     <div class="text-center">
                                         <a href="{{ asset('storage/exmtreatment-proof/' . $data->proof) }}"
                                             target="_blank" class="text-gray-500 hover:underline inline-block">
-                                            <i class="fas fa-file"></i> Lihat Bukti Pembayaran
+                                            <i class="fas fa-file"></i> Lihat Dokumentasi Pemeriksaan
                                         </a>
                                     </div>
                                     <div class="flex items-center justify-end">
@@ -365,7 +365,7 @@
                             <option value="{{ $treatment->id }}">{{ $treatment->name }}</option>
                         @endforeach
                     </x-select>
-                    <x-input-file id="proof" label="Bukti Pembayaran" name="proof" required />
+                    <x-input-file id="proof" label="Dokumentasi Pemeriksaan" name="proof" required />
                     <x-input id="treatment_code" label="Kode Layanan" name="code" type="text" readonly />
                     <x-input id="treatment_price" label="Harga" name="price" type="text" readonly />
                     <x-input id="treatment_discount" label="Diskon" name="discount" type="text" readonly />
@@ -585,8 +585,15 @@
                     if (treatmentSelected != undefined) {
                         $('#treatment_code').val(treatmentSelected.code ?? '');
                         $('#treatment_price').val(rupiahFormat(treatmentSelected.price));
-                        let isDiscountActive = treatmentSelected.discount_treatment.discount;
-                        let hasDiscount = treatmentSelected.discount_treatment.discount;
+                        let isDiscountActive = treatmentSelected.discount_treatment;
+                        let hasDiscount = treatmentSelected.discount_treatment;
+
+                        if (treatmentSelected.discount_treatment == null) {
+                            $('#treatment_discount').val('0');
+                            $('#sub_total').val(rupiahFormat(treatmentSelected.price));
+                            return;
+                        }
+
                         let discountType = hasDiscount ? treatmentSelected.discount_treatment.discount_type :
                             null;
                         let discountRate = hasDiscount ? treatmentSelected.discount_treatment.discount_rate : 0;
@@ -623,6 +630,24 @@
                                 $('#sub_total').val(rupiahFormat(subTotal));
                             }
                         });
+                    }
+                });
+
+                $('#proof').on('change', function() {
+                    const proof = $(this).prop('files')[0];
+                    let allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+                    if (proof) {
+                        if (!allowedExtensions.exec(proof.name)) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal',
+                                text: 'Pastikan file yang diupload adalah gambar',
+                                showConfirmButton: false,
+                            });
+                            // clear input file
+                            $(this).val('');
+                            return;
+                        }
                     }
                 });
 

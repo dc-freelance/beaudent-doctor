@@ -3,7 +3,9 @@
 <div class="grid grid-cols-4 items-center">
     <div>
         <p>{{ date('d/m/Y', strtotime($examination->created_at)) }}</p>
-        <p class="text-gray-500">{{ date('H:i', strtotime($examination->created_at)) }} WIB</p>
+        <p class="text-gray-500">
+            {{ \Carbon\Carbon::parse($examination->created_at)->locale('id')->isoFormat('H:mm') }} WIB
+        </p>
     </div>
     <p>{{ $examination->doctor->name }}</p>
     <p>{{ $examination->reservation->branch->name }}</p>

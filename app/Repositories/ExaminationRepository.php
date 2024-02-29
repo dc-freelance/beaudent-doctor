@@ -15,7 +15,7 @@ class ExaminationRepository implements ExaminationInterface
     public function __construct(Examination $examination, Customer $customer)
     {
         $this->examination = $examination;
-        $this->customer = $customer;
+        $this->customer    = $customer;
     }
 
     public function getById($id)
@@ -61,6 +61,7 @@ class ExaminationRepository implements ExaminationInterface
                 'medications'              => $data['medications'] ?? null,
                 'allergies_to_food'        => $data['allergies_to_food'],
                 'foods'                    => $data['foods'] ?? null,
+                'created_at'               => Carbon::now()->locale('id')->isoFormat('YYYY-MM-DD HH:mm:ss'),
             ]
         );
 
@@ -70,6 +71,7 @@ class ExaminationRepository implements ExaminationInterface
     public function update($id, $data)
     {
         $examination = $this->examination->find($id);
+        $data['created_at'] = Carbon::now()->locale('id')->isoFormat('YYYY-MM-DD HH:mm:ss');
         $examination->update($data);
 
         return $examination;

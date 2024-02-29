@@ -46,11 +46,13 @@
                         <h3 class="text-xs text-gray-500 font-semibold uppercase mb-6">Branch</h3>
                         <h3 class="text-xs text-gray-500 font-semibold uppercase mb-6">Lihat</h3>
                     </div>
-                    @forelse ($examinationHistories as $history)
-                        <x-examination-history :examination="$history" />
-                    @empty
-                        <p class="text-gray-500">Tidak ada riwayat pemeriksaan</p>
-                    @endforelse
+                    <div class="space-y-6">
+                        @forelse ($examinationHistories as $history)
+                            <x-examination-history :examination="$history" />
+                        @empty
+                            <p class="text-gray-500">Tidak ada riwayat pemeriksaan</p>
+                        @endforelse
+                    </div>
                 </div>
             </div>
         </div>
