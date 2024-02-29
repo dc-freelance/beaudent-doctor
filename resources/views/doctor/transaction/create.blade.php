@@ -588,6 +588,11 @@
                         let isDiscountActive = treatmentSelected.discount_treatment;
                         let hasDiscount = treatmentSelected.discount_treatment;
 
+                        if (hasDiscount && isDiscountActive) {
+                            hasDiscount = hasDiscount.discount;
+                            isDiscountActive = hasDiscount.discount;
+                        }
+
                         if (treatmentSelected.discount_treatment == null) {
                             $('#treatment_discount').val('0');
                             $('#sub_total').val(rupiahFormat(treatmentSelected.price));
@@ -648,6 +653,18 @@
                             $(this).val('');
                             return;
                         }
+                    }
+                    // check max size 5mb
+                    if (proof.size > 5000000) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: 'Pastikan ukuran file tidak melebihi 5MB',
+                            showConfirmButton: false,
+                        });
+                        // clear input file
+                        $(this).val('');
+                        return;
                     }
                 });
 
