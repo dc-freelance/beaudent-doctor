@@ -18,6 +18,7 @@ module.exports = {
                     // "Plus Jakarta Sans",
                     ...defaultTheme.fontFamily.sans,
                 ],
+                poppins: "'Poppins', sans-serif",
             },
             colors: {
                 primary: "#D04848",
