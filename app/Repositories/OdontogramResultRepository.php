@@ -158,5 +158,7 @@ class OdontogramResultRepository implements OdontogramResultInterface
 
     public function groupOdontogramResultsForTable($odontogramResults)
     {
+        $odontograms = $this->odontogramResult->get()->groupBy('tooth_number');
+        return $odontograms;
     }
 }

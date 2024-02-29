@@ -2,10 +2,10 @@
     <x-breadcrumb :links="[
         ['name' => 'Dashboard', 'url' => route('doctor.dashboard')],
         ['name' => 'Detail Pemeriksaan', 'url' => route('doctor.examinations.show', $examination->id)],
-        ['name' => 'Transaksi'],
-    ]" title="Pembayaran" />
+        ['name' => 'Layanan'],
+    ]" title="Layanan" />
 
-    <div class="lg:w-3/5 mx-auto">
+    <div class="xl:w-3/5 mx-auto">
         <x-card-container>
             <div class="flex justify-between">
                 <div>
@@ -22,194 +22,235 @@
                 </div>
             </div>
             <hr class="my-3">
-            <form action="" method="POST" class="space-y-6">
-                @csrf
-                <div id="accordion-collapse" data-accordion="collapse">
-                    <!-- Patient -->
-                    <h2>
-                        <button type="button"
-                            class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 rounded-t-sm focus:ring-4 focus:ring-gray-2000 gap-3">
-                            <span>Pasien</span>
-                        </button>
-                    </h2>
-                    <div id="accordion-collapse-body-1" aria-labelledby="accordion-collapse-heading-1">
-                        <div class="p-5 border border-b-0 border-gray-200">
-                            <div class="space-y-2">
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    <h4 class="font-semibold mb-2">Nama</h4>
-                                    <p class="col-span-2">: {{ $examination->reservation->customer->name }}</p>
-                                </div>
-
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    <h4 class="font-semibold mb-2">Jadwal</h4>
-                                    <p class="col-span-2">:
-                                        {{ date('d/m/Y', strtotime($examination->reservation->request_date)) }}
-                                        {{ date('H:i', strtotime($examination->reservation->request_time)) }}
-                                        WIB
-                                    </p>
-                                </div>
-
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    <h4 class="font-semibold mb-2">Tanggal Lahir</h4>
-                                    <p class="col-span-2">:
-                                        {{ Carbon\Carbon::parse($examination->reservation->customer->date_of_birth)->locale('id')->isoFormat('LL') }}
-                                    </p>
-                                </div>
-
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    <h4 class="font-semibold mb-2">Tempat Lahir</h4>
-                                    <p class="col-span-2">:
-                                        {{ $examination->reservation->customer->place_of_birth }}
-                                    </p>
-                                </div>
-
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    <h4 class="font-semibold mb-2">Jenis Kelamin</h4>
-                                    <p class="col-span-2">:
-                                        {{ $examination->reservation->customer->gender == 'Male' ? 'Laki-laki' : 'Perempuan' }}
-                                    </p>
-                                </div>
+            <div id="accordion-collapse" data-accordion="collapse">
+                <!-- Patient -->
+                <h2>
+                    <button type="button"
+                        class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 rounded-t-sm focus:ring-4 focus:ring-gray-2000 gap-3">
+                        <span>Pasien</span>
+                    </button>
+                </h2>
+                <div id="accordion-collapse-body-1" aria-labelledby="accordion-collapse-heading-1">
+                    <div class="p-5 border border-b-0 border-gray-200">
+                        <div class="space-y-2">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <h4 class="font-semibold mb-2">Nama</h4>
+                                <p class="col-span-2">: {{ $examination->reservation->customer->name }}</p>
                             </div>
-                        </div>
-                    </div>
 
-                    <!-- Treatment -->
-                    <h2>
-                        <button type="button"
-                            class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-gray-200 gap-3">
-                            <span>Layanan</span>
-                        </button>
-                    </h2>
-                    <div id="accordion-collapse-body-2" aria-labelledby="accordion-collapse-heading-2">
-                        <div class="p-5 border border-b-0 border-gray-200">
-                            <div class="" id="treatmentContainer">
-                                @foreach ($examinationTreatments as $data)
-                                    <div class="flex justify-between items-start mb-4">
-                                        <div>
-                                            <h4 class="font-semibold mb-1">{{ $data->treatment->name }}</h4>
-                                            <p class="text-gray-500">Jumlah: {{ $data->qty }}</p>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <p class="text-gray-500">Rp.
-                                                {{ number_format($data->sub_total, 0, ',', '.') }}</p>
-                                            <button type="button" onclick="removeTreatment({{ $data->id }})"
-                                                class="text-red-600 hover:text-red-900 focus:ring-4 focus:outline-none ms-4 font-medium">
-                                                Hapus
-                                            </button>
-                                        </div>
-                                    </div>
-                                @endforeach
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <h4 class="font-semibold mb-2">Jadwal</h4>
+                                <p class="col-span-2">:
+                                    {{ date('d/m/Y', strtotime($examination->reservation->request_date)) }}
+                                    {{ date('H:i', strtotime($examination->reservation->request_time)) }}
+                                    WIB
+                                </p>
                             </div>
-                            <div class="flex justify-center">
-                                <button data-modal-target="modal-treatment" data-modal-toggle="modal-treatment"
-                                    class="text-gray-900 hover:text-white border-2 border-gray-200 hover:bg-blue-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                                    id="addTreatmentModal" type="button">
-                                    <i class="fas fa-plus"></i> Tambah Layanan
-                                </button>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Medicine -->
-                    <h2>
-                        <button type="button"
-                            class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-gray-200 focus:ring-4 focus:ring-gray-200 gap-3">
-                            <span>Obat</span>
-                        </button>
-                    </h2>
-                    <div id="accordion-collapse-body-3" aria-labelledby="accordion-collapse-heading-3">
-                        <div class="p-5 border border-t-0 border-gray-200">
-                            <div class="" id="itemsContainer">
-                                @foreach ($examinationItems as $data)
-                                    <div class="flex justify-between items-start mb-4">
-                                        <div class="space-y-1">
-                                            <h4 class="font-semibold">{{ $data->item->name }}</h4>
-                                            <p class="text-gray-500">
-                                                Jumlah: {{ $data->qty . ' ' . $data->item->unit->name }}
-                                            </p>
-                                            <p class="text-gray-500">
-                                                Dosis:
-                                                {{ $data->amount_a_day . ' x ' . $data->day . ' ' . $data->item->unit->name . ' selama ' . $data->duration . ' ' . $data->period }}
-                                            </p>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <p class="text-gray-500">Rp.
-                                                {{ number_format($data->sub_total, 0, ',', '.') }}</p>
-                                            <button type="button"
-                                                onclick="removeItem('{{ $data->id }}', '{{ $data->item->name }}')"
-                                                class="text-red-600 hover:text-red-900 focus:ring-4 focus:outline-none ms-4 font-medium">
-                                                Hapus
-                                            </button>
-                                        </div>
-                                    </div>
-                                @endforeach
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <h4 class="font-semibold mb-2">Tanggal Lahir</h4>
+                                <p class="col-span-2">:
+                                    {{ Carbon\Carbon::parse($examination->reservation->customer->date_of_birth)->locale('id')->isoFormat('LL') }}
+                                </p>
                             </div>
-                            <div class="flex justify-center">
-                                <button data-modal-target="modal-items" data-modal-toggle="modal-items"
-                                    id="addItemModal"
-                                    class="text-gray-900 hover:text-white border-2 border-gray-200 hover:bg-blue-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                                    type="button">
-                                    <i class="fas fa-plus"></i> Tambah Obat
-                                </button>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Addon -->
-                    <h2>
-                        <button type="button"
-                            class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-gray-200 focus:ring-4 focus:ring-gray-200 gap-3">
-                            <span>Addon</span>
-                        </button>
-                    </h2>
-                    <div id="accordion-collapse-body-3" aria-labelledby="accordion-collapse-heading-3">
-                        <div class="p-5 border border-t-0 border-gray-200">
-                            <div id="listAddon">
-                                @foreach ($examinationAddons as $data)
-                                    <div class="flex justify-between items-start mb-4">
-                                        <div class="space-y-1">
-                                            <h4 class="font-semibold">{{ $data->addon->name }}</h4>
-                                            <p class="text-gray-500">Jumlah: {{ $data->qty }}</p>
-                                            <p class="text-gray-500">+fee :
-                                                {{ number_format($data->fee, 0, ',', '.') }}</p>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <p class="text-gray-500">Rp.
-                                                {{ number_format($data->sub_total, 0, ',', '.') }}</p>
-                                            <button type="button" onclick="removeAddon({{ $data->id }})"
-                                                class="text-red-600 hover:text-red-900 focus:ring-4 focus:outline-none ms-4 font-medium">
-                                                Hapus
-                                            </button>
-                                        </div>
-                                    </div>
-                                @endforeach
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <h4 class="font-semibold mb-2">Tempat Lahir</h4>
+                                <p class="col-span-2">:
+                                    {{ $examination->reservation->customer->place_of_birth }}
+                                </p>
                             </div>
-                            <div class="flex justify-center">
-                                <button data-modal-target="modal-addon" data-modal-toggle="modal-addon"
-                                    id="addAddonModal"
-                                    class="text-gray-900 hover:text-white border-2 border-gray-200 hover:bg-blue-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                                    type="button">
-                                    <i class="fas fa-plus"></i> Tambah Addon
-                                </button>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <h4 class="font-semibold mb-2">Jenis Kelamin</h4>
+                                <p class="col-span-2">:
+                                    {{ $examination->reservation->customer->gender == 'Male' ? 'Laki-laki' : 'Perempuan' }}
+                                </p>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Summary -->
-                    <h2>
-                        <button type="button"
-                            class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-gray-200 focus:ring-4 focus:ring-gray-200 gap-3">
-                            <span>Rincian</span>
-                        </button>
-                    </h2>
-                    <div id="accordion-collapse-body-3" aria-labelledby="accordion-collapse-heading-3">
-                        <div class="p-5 border border-t-0 border-gray-200">
-
                         </div>
                     </div>
                 </div>
-            </form>
+
+                <!-- Treatment -->
+                <h2>
+                    <button type="button"
+                        class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-gray-200 gap-3">
+                        <span>Layanan</span>
+                    </button>
+                </h2>
+                <div id="accordion-collapse-body-2" aria-labelledby="accordion-collapse-heading-2">
+                    <div class="p-5 border border-b-0 border-gray-200">
+                        <div class="" id="treatmentContainer">
+                            @foreach ($examinationTreatments as $data)
+                                <div
+                                    class="grid grid-cols-1 lg:grid-cols-3 items-center mb-4 @if (!$loop->last) pb-4 border-b border-gray-200 @endif">
+                                    <div>
+                                        <h4 class="font-semibold mb-1">{{ $data->treatment->name }}</h4>
+                                        <p class="text-gray-500">Jumlah: {{ $data->qty }}</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <a href="{{ asset('storage/exmtreatment-proof/' . $data->proof) }}"
+                                            target="_blank" class="text-gray-500 hover:underline inline-block">
+                                            <i class="fas fa-file"></i> Lihat Bukti Pembayaran
+                                        </a>
+                                    </div>
+                                    <div class="flex items-center justify-end">
+                                        <p class="text-gray-500">Rp.
+                                            {{ number_format($data->sub_total, 0, ',', '.') }}</p>
+                                        <button type="button" onclick="removeTreatment({{ $data->id }})"
+                                            class="text-red-600 hover:text-red-900 focus:ring-4 focus:outline-none ms-4 font-medium">
+                                            Hapus
+                                        </button>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="flex justify-center mt-8">
+                            <button data-modal-target="modal-treatment" data-modal-toggle="modal-treatment"
+                                class="text-gray-900 hover:text-white border-2 border-gray-200 hover:bg-blue-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                id="addTreatmentModal" type="button">
+                                <i class="fas fa-plus"></i> Tambah Layanan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medicine -->
+                <h2>
+                    <button type="button"
+                        class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-gray-200 focus:ring-4 focus:ring-gray-200 gap-3">
+                        <span>Obat</span>
+                    </button>
+                </h2>
+                <div id="accordion-collapse-body-3" aria-labelledby="accordion-collapse-heading-3">
+                    <div class="p-5 border border-t-0 border-gray-200">
+                        <div class="" id="itemsContainer">
+                            @foreach ($examinationItems as $data)
+                                <div
+                                    class="flex justify-between items-start mb-4 @if (!$loop->last) pb-4 border-b border-gray-200 @endif">
+                                    <div class="space-y-1">
+                                        <h4 class="font-semibold">{{ $data->item->name }}</h4>
+                                        <p class="text-gray-500">
+                                            Jumlah: {{ $data->qty . ' ' . $data->item->unit->name }}
+                                        </p>
+                                        <p class="text-gray-500">
+                                            Dosis:
+                                            {{ $data->amount_a_day . ' x ' . $data->day . ' ' . $data->item->unit->name . ' selama ' . $data->duration . ' ' . $data->period }}
+                                        </p>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <p class="text-gray-500">Rp.
+                                            {{ number_format($data->sub_total, 0, ',', '.') }}</p>
+                                        <button type="button"
+                                            onclick="removeItem('{{ $data->id }}', '{{ $data->item->name }}')"
+                                            class="text-red-600 hover:text-red-900 focus:ring-4 focus:outline-none ms-4 font-medium">
+                                            Hapus
+                                        </button>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="flex justify-center mt-8">
+                            <button data-modal-target="modal-items" data-modal-toggle="modal-items" id="addItemModal"
+                                class="text-gray-900 hover:text-white border-2 border-gray-200 hover:bg-blue-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                type="button">
+                                <i class="fas fa-plus"></i> Tambah Obat
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Addon -->
+                <h2>
+                    <button type="button"
+                        class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-gray-200 focus:ring-4 focus:ring-gray-200 gap-3">
+                        <span>Addon</span>
+                    </button>
+                </h2>
+                <div id="accordion-collapse-body-3" aria-labelledby="accordion-collapse-heading-3">
+                    <div class="p-5 border border-t-0 border-gray-200">
+                        <div id="listAddon">
+                            @foreach ($examinationAddons as $data)
+                                <div
+                                    class="flex justify-between items-start mb-4 @if (!$loop->last) pb-4 border-b border-gray-200 @endif">
+                                    <div class="space-y-1">
+                                        <h4 class="font-semibold">{{ $data->addon->name }}</h4>
+                                        <p class="text-gray-500">Jumlah: {{ $data->qty }}</p>
+                                        <p class="text-gray-500">+fee :
+                                            {{ number_format($data->fee, 0, ',', '.') }}</p>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <p class="text-gray-500">Rp.
+                                            {{ number_format($data->sub_total, 0, ',', '.') }}</p>
+                                        <button type="button" onclick="removeAddon({{ $data->id }})"
+                                            class="text-red-600 hover:text-red-900 focus:ring-4 focus:outline-none ms-4 font-medium">
+                                            Hapus
+                                        </button>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="flex justify-center mt-8">
+                            <button data-modal-target="modal-addon" data-modal-toggle="modal-addon"
+                                id="addAddonModal"
+                                class="text-gray-900 hover:text-white border-2 border-gray-200 hover:bg-blue-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                type="button">
+                                <i class="fas fa-plus"></i> Tambah Addon
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary -->
+                <h2>
+                    <button type="button"
+                        class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-gray-200 focus:ring-4 focus:ring-gray-200 gap-3">
+                        <span>Total</span>
+                    </button>
+                </h2>
+                <div id="accordion-collapse-body-3" aria-labelledby="accordion-collapse-heading-3">
+                    <div class="p-5 border border-t-0 border-gray-200 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h4 class="font-semibold">Layanan</h4>
+                            <p class="text-gray-500">Rp.
+                                {{ number_format($transactionSummary['treatments'], 0, ',', '.') }}</p>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <h4 class="font-semibold">Obat</h4>
+                            <p class="text-gray-500">Rp.
+                                {{ number_format($transactionSummary['items'], 0, ',', '.') }}</p>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <h4 class="font-semibold">Addon</h4>
+                            <p class="text-gray-500">Rp.
+                                {{ number_format($transactionSummary['addons'], 0, ',', '.') }}</p>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <h4 class="font-semibold">Biaya</h4>
+                            <p class="text-gray-500">Rp.
+                                {{ number_format($transactionSummary['total'], 0, ',', '.') }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </x-card-container>
+
+        <div class="flex justify-center space-x-2 mt-6">
+            <div>
+                <a href="{{ route('doctor.examinations.show', $examination->id) }}"
+                    class="text-gray-900 hover:text-white border-2 border-gray-200 hover:bg-blue-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                    id="addTreatmentModal" type="button">
+                    Kembali
+                </a>
+            </div>
+            @if (!$transaction)
+                <button id="submitTransaction"
+                    class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                    type="submit">
+                    Selesaikan Pembayaran
+                </button>
+            @endif
+        </div>
     </div>
 
     <!-- Modal Items -->
@@ -319,11 +360,12 @@
                 <!-- Modal body -->
                 <div class="p-4 md:p-5 space-y-6">
                     <x-select id="treatment_id" name="treatment_id" label="Layanan" required>
-                        <option value="">Pilih Layanan</option>
+                        <option selected value="0">Pilih Layanan</option>
                         @foreach ($treatments as $treatment)
                             <option value="{{ $treatment->id }}">{{ $treatment->name }}</option>
                         @endforeach
                     </x-select>
+                    <x-input-file id="proof" label="Bukti Pembayaran" name="proof" required />
                     <x-input id="treatment_code" label="Kode Layanan" name="code" type="text" readonly />
                     <x-input id="treatment_price" label="Harga" name="price" type="text" readonly />
                     <x-input id="treatment_discount" label="Diskon" name="discount" type="text" readonly />
@@ -390,6 +432,60 @@
     </div>
 
     @push('js-internal')
+        <script>
+            $(function() {
+                $('#submitTransaction').on('click', function(e) {
+                    Swal.fire({
+                        title: 'Apakah Anda yakin?',
+                        text: "Pembayaran ini akan disimpan!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Ya, simpan!',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            let formData = {
+                                _token: '{{ csrf_token() }}',
+                                branch_id: '{{ $branchId }}',
+                                examination_id: '{{ $examination->id }}',
+                                doctor_id: '{{ $doctorId }}',
+                                customer_id: '{{ $customerId }}',
+                                total: '{{ $transactionSummary['total'] }}',
+                            };
+
+                            $.ajax({
+                                type: "POST",
+                                url: "{{ route('doctor.transactions.store') }}",
+                                data: formData,
+                                dataType: "json",
+                                success: function(response) {
+                                    if (response.status == true) {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Berhasil',
+                                            text: 'Pembayaran berhasil disimpan',
+                                            showConfirmButton: false,
+                                        });
+                                        setTimeout(() => {
+                                            location.href =
+                                                '{{ route('doctor.patients.examinations', $customerId) }}';
+                                        }, 500);
+                                    } else {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Gagal',
+                                            text: response.message,
+                                            showConfirmButton: false,
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+        </script>
+
         <script>
             $(function() {
                 $('select.select-input').select2();
@@ -482,72 +578,102 @@
                 }
 
                 $('#treatment_id').on('change', function() {
-                    const treatmentId = $(this).val();
-                    const treatment = @json($treatments);
-                    const treatmentSelected = treatment.find(treatment => treatment.id == treatmentId);
+                    let treatmentId = $(this).val();
+                    let treatments = @json($treatments);
+                    let treatmentSelected = treatments.find(treatment => treatment.id == treatmentId);
 
-                    resetFormTreatment();
+                    if (treatmentSelected != undefined) {
+                        $('#treatment_code').val(treatmentSelected.code ?? '');
+                        $('#treatment_price').val(rupiahFormat(treatmentSelected.price));
+                        let isDiscountActive = treatmentSelected.discount_treatment.discount;
+                        let hasDiscount = treatmentSelected.discount_treatment.discount;
+                        let discountType = hasDiscount ? treatmentSelected.discount_treatment.discount_type :
+                            null;
+                        let discountRate = hasDiscount ? treatmentSelected.discount_treatment.discount_rate : 0;
 
-                    $('#treatment_code').val(treatmentSelected.code ?? '');
-                    $('#treatment_price').val(rupiahFormat(treatmentSelected.price));
-                    let hasDiscount = treatmentSelected.discount_treatment;
-                    let discountType = hasDiscount ? hasDiscount.discount.discount_type : null;
-                    hasDiscount = hasDiscount ? hasDiscount.discount : 0;
-
-                    if (hasDiscount) {
-                        if (hasDiscount.discount_type == 'Percentage') {
-                            $('#treatment_discount').parent().find('label').text('Diskon (%)');
-                            $('#treatment_discount').val(percentageFormat(hasDiscount.discount));
+                        if (hasDiscount) {
+                            if (treatmentSelected.discount_treatment.discount_type == 'Percentage') {
+                                $('#treatment_discount').parent().find('label').text('Diskon (%)');
+                                $('#treatment_discount').val(percentageFormat(discountRate));
+                                $('#sub_total').val(rupiahFormat(treatmentSelected.price - (treatmentSelected
+                                    .price * discountRate / 100)));
+                            } else {
+                                $('#treatment_discount').parent().find('label').text('Diskon (Rp)');
+                                $('#treatment_discount').val(rupiahFormat(discountRate));
+                                $('#sub_total').val(rupiahFormat(treatmentSelected.price - hasDiscount
+                                    .discount_rate));
+                            }
                         } else {
-                            $('#treatment_discount').parent().find('label').text('Diskon (Rp)');
-                            $('#treatment_discount').val(rupiahFormat(hasDiscount.discount));
+                            $('#treatment_discount').parent().find('label').text('Diskon');
+                            $('#treatment_discount').val('0');
+                            $('#sub_total').val(rupiahFormat(treatmentSelected.price));
                         }
-                    } else {
-                        $('#treatment_discount').parent().find('label').text('Diskon');
-                        $('#treatment_discount').val('0');
+
+                        $('#qty').on('input', function() {
+                            const qty = $(this).val();
+                            const price = removeRupiahFormat($('#treatment_price').val());
+                            const discount = discountType == 'Percentage' ? removePercentageFormat(
+                                $('#treatment_discount').val()) : removeRupiahFormat($(
+                                '#treatment_discount').val());
+                            if (discountType == 'Percentage') {
+                                const subTotal = price * qty - (price * qty * discount / 100);
+                                $('#sub_total').val(rupiahFormat(subTotal));
+                            } else {
+                                const subTotal = price * qty - discount;
+                                $('#sub_total').val(rupiahFormat(subTotal));
+                            }
+                        });
                     }
-
-                    $('#qty').on('input', function() {
-                        const qty = $(this).val();
-                        const price = removeRupiahFormat($('#treatment_price').val());
-                        const discount = discountType == 'Percentage' ? removePercentageFormat(
-                            $('#treatment_discount').val()) : removeRupiahFormat($(
-                            '#treatment_discount').val());
-                        if (discountType == 'Percentage') {
-                            const subTotal = price * qty - (price * qty * discount / 100);
-                            $('#sub_total').val(rupiahFormat(subTotal));
-                        } else {
-                            const subTotal = price * qty - discount;
-                            $('#sub_total').val(rupiahFormat(subTotal));
-                        }
-
-                        examinationTreatmentsFormData = {
-                            _token: '{{ csrf_token() }}',
-                            examination_id: '{{ $examination->id }}',
-                            treatment_id: treatmentId,
-                            qty: qty,
-                            sub_total: removeRupiahFormat($('#sub_total').val())
-                        };
-                    });
                 });
 
                 $('button#addTreatment').on('click', function() {
                     const treatmentId = $('#treatment_id option:selected').val();
+                    const proof = $('#proof').prop('files')[0];
+
+                    if (treatmentId == 0 || proof == undefined || $('#qty').val() == 0) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: 'Pastikan semua data terisi',
+                            showConfirmButton: false,
+                        });
+                        return;
+                    }
+
+                    let formData = new FormData();
+                    formData.append('proof', proof);
+                    formData.append('examination_id', '{{ $examination->id }}');
+                    formData.append('treatment_id', treatmentId);
+                    formData.append('qty', $('#qty').val());
+                    formData.append('sub_total', removeRupiahFormat($('#sub_total').val()));
+                    formData.append('_token', '{{ csrf_token() }}');
+
                     $.ajax({
                         type: "POST",
                         url: "{{ route('doctor.transactions.add-treatment') }}",
-                        data: examinationTreatmentsFormData,
+                        data: formData,
+                        contentType: false,
+                        processData: false,
                         dataType: "json",
                         success: function(response) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil',
-                                text: 'Layanan berhasil ditambahkan',
-                                showConfirmButton: false,
-                            });
-                            setTimeout(() => {
-                                location.reload();
-                            }, 500);
+                            if (response.status == true) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil',
+                                    text: 'Layanan berhasil ditambahkan',
+                                    showConfirmButton: false,
+                                });
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 500);
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Gagal',
+                                    text: response.message,
+                                    showConfirmButton: false,
+                                });
+                            }
                         }
                     });
                 });
@@ -666,26 +792,31 @@
                 let itemId = $(this).val();
                 let item = @json($items);
                 let itemSelected = item.find(item => item.id == itemId);
-                let price = itemSelected.price;
-                let hasDiscount = itemSelected.discount_item ?? null;
-                let discountType = hasDiscount ? hasDiscount.discount.discount_type : null;
-                let discountPrice = hasDiscount ? hasDiscount.discount.discount : 0;
+                if (itemSelected != undefined) {
+                    let price = itemSelected.price;
+                    let hasDiscount = itemSelected.discount_item ? itemSelected.discount_item.discount : false;
+                    let discountType = hasDiscount ? itemSelected.discount_item.discount_type : null;
+                    let discountPrice = hasDiscount ? itemSelected.discount_item.discount_rate : 0;
 
-                $('#item_price').val(rupiahFormat(price));
-                $('#item_discount').val(discountType == 'Percentage' ? percentageFormat(discountPrice) : rupiahFormat(
-                    discountPrice));
-                $('#item_discount').parent().find('label').text(discountType == 'Percentage' ? 'Diskon (%)' :
-                    'Diskon (Rp)');
+                    $('#item_price').val(rupiahFormat(price));
+                    $('#item_discount').val(discountType == 'Percentage' ? percentageFormat(discountPrice) :
+                        rupiahFormat(
+                            discountPrice));
+                    $('#item_discount').parent().find('label').text(discountType == 'Percentage' ? 'Diskon (%)' :
+                        'Diskon (Rp)');
 
-                let priceAfterDiscount = 0;
-                if (discountType == 'Percentage') {
-                    discountPrice = discountPrice / 100;
-                    priceAfterDiscount = price - (price * discountPrice);
-                } else {
-                    priceAfterDiscount = price - discountPrice;
-                }
-                examinationItemsFormData = {
-                    subTotal: priceAfterDiscount
+                    let priceAfterDiscount = 0;
+                    if (discountType == 'Percentage') {
+                        discountPrice = discountPrice / 100;
+                        priceAfterDiscount = price - (price * discountPrice);
+                        $('#item_sub_total').val(rupiahFormat(priceAfterDiscount));
+                    } else {
+                        priceAfterDiscount = price - discountPrice;
+                        $('#item_sub_total').val(rupiahFormat(priceAfterDiscount));
+                    }
+                    examinationItemsFormData = {
+                        subTotal: priceAfterDiscount
+                    }
                 }
             });
 
@@ -710,6 +841,38 @@
                 let period = $('#period').val();
                 let duration = $('#duration').val();
                 let guide = $('#guide').val();
+
+                // BEGIN: ed8c6549bwf9
+                if (itemId == 0 || amountADay == '' || day == '' || period == 0 || duration == '' || qty == '') {
+                    let emptyFields = [];
+                    if (itemId == 0) {
+                        emptyFields.push('Jenis Obat');
+                    }
+                    if (amountADay == '') {
+                        emptyFields.push('Dosis Obat');
+                    }
+                    if (day == '') {
+                        emptyFields.push('Jumlah Hari');
+                    }
+                    if (period == 0) {
+                        emptyFields.push('Periode');
+                    }
+                    if (duration == '') {
+                        emptyFields.push('Durasi');
+                    }
+                    if (qty == '') {
+                        emptyFields.push('Jumlah Obat');
+                    }
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: 'Lengkapi data pada kolom berikut: ' + emptyFields.join(', '),
+                        showConfirmButton: false,
+                    });
+                    return;
+                }
+                // END: ed8c6549bwf9
 
                 examinationItemsFormData = {
                     _token: '{{ csrf_token() }}',

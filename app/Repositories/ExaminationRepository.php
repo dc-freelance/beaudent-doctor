@@ -3,16 +3,19 @@
 namespace App\Repositories;
 
 use App\Interfaces\ExaminationInterface;
+use App\Models\Customer;
 use App\Models\Examination;
 use Carbon\Carbon;
 
 class ExaminationRepository implements ExaminationInterface
 {
     private $examination;
+    private $customer;
 
-    public function __construct(Examination $examination)
+    public function __construct(Examination $examination, Customer $customer)
     {
         $this->examination = $examination;
+        $this->customer = $customer;
     }
 
     public function getById($id)
@@ -70,5 +73,17 @@ class ExaminationRepository implements ExaminationInterface
         $examination->update($data);
 
         return $examination;
+    }
+
+    public function getAllExaminationGroupByCustomer()
+    {
+        $customers = $this->customer->with('examinations')->has('examinations')->get();
+        return $customers;
+    }
+
+    public function getExaminationByCustomerId($customerId)
+    {
+        $examinations = $this->customer->with('examinations')->find($customerId);
+        return $examinations;
     }
 }

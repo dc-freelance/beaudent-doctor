@@ -43,18 +43,21 @@ class ExaminationController extends Controller
         $reservation   = $data['reservation'] ?? null;
         $medicalRecord = $data['medicalRecord'] ?? null;
         $doctor        = $data['doctor'] ?? null;
+
         return view('doctor.examination.edit', compact('data', 'reservation', 'medicalRecord', 'doctor'));
     }
 
     public function show($id)
     {
-        $examination       = $this->examination->getById($id);
-        $reservation       = $examination['reservation'];
-        $medicalRecord     = $examination['medicalRecord'];
-        $odontogramResults = $examination['odontogramResults'];
-        $transaction       = $this->transaction->getByExaminationId($id);
+        $examination        = $this->examination->getById($id);
+        $reservation        = $examination['reservation'];
+        $medicalRecord      = $examination['medicalRecord'];
+        $odontogramResults  = $examination['odontogramResults'];
+        $transaction        = $this->transaction->getByExaminationId($id);
 
-        return view('doctor.queue.show', compact('reservation', 'medicalRecord', 'examination', 'odontogramResults', 'transaction'));
+        $examinationHistories = $this->examination->getExaminationByCustomerId($examination['customer_id'])['examinations'] ?? null;
+
+        return view('doctor.queue.show', compact('reservation', 'medicalRecord', 'examination', 'odontogramResults', 'transaction', 'examinationHistories'));
     }
 
     public function store(Request $request)

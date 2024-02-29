@@ -74,7 +74,7 @@ class QueueRepository implements QueueInterface
             ->where('date', Carbon::now('Asia/Jakarta')->format('Y-m-d'))
             ->first();
 
-        if (!$reservations) {
+        if (!$reservations || !$doctorSchedule) {
             return [];
         }
 

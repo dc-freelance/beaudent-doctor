@@ -56,9 +56,9 @@ class Examination extends Model
         return $this->belongsTo(Doctor::class);
     }
 
-    public function addonTransactions()
+    public function addonExamination()
     {
-        return $this->hasMany(AddonTransaction::class);
+        return $this->hasMany(AddonExamination::class);
     }
 
     public function examination()

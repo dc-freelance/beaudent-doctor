@@ -3,6 +3,7 @@
     <x-breadcrumb :links="[
         ['name' => 'Dashboard', 'url' => route('doctor.dashboard')],
         ['name' => 'Daftar Antrian', 'url' => route('doctor.queues.index')],
+        ['name' => $reservation->customer->name, 'url' => route('doctor.examinations.show', $data->id)],
         ['name' => 'Pemeriksaan Pasien'],
     ]" title="Pemeriksaan Pasien" />
 

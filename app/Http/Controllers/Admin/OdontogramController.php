@@ -61,6 +61,6 @@ class OdontogramController extends Controller
         $odontogramGroup    = $this->odontogramResult->groupOdontogramResults($odontogramResults);
         $odontogramForTable = $this->odontogramResult->groupOdontogramResultsForTable($odontogramGroup);
 
-        return view('doctor.odontogram.show', compact('odontograms', 'examination', 'odontogramGroup', 'odontogramResults'));
+        return view('doctor.odontogram.show', compact('odontograms', 'examination', 'odontogramGroup', 'odontogramResults', 'odontogramForTable'));
     }
 }

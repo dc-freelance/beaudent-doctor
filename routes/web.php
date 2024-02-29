@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\ExaminationController;
 use App\Http\Controllers\Admin\MedicalRecordController;
 use App\Http\Controllers\Admin\OdontogramController;
+use App\Http\Controllers\Admin\PatientController;
 use App\Http\Controllers\Admin\QueueController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\AuthController;
@@ -47,6 +48,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['doctor']], function () 
     // Transaction
     Route::group(['prefix' => 'transactions'], function () {
         Route::get('{examination_id}/create', [TransactionController::class, 'create'])->name('doctor.transactions.create');
+        Route::post('store', [TransactionController::class, 'store'])->name('doctor.transactions.store');
+        Route::get('{examination_id}/show', [TransactionController::class, 'show'])->name('doctor.transactions.show');
 
         // Treatment
         Route::post('add-treatment', [TransactionController::class, 'addTreatment'])->name('doctor.transactions.add-treatment');
@@ -59,6 +62,12 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['doctor']], function () 
         // Addon
         Route::post('add-addon', [TransactionController::class, 'addAddon'])->name('doctor.transactions.add-addon');
         Route::delete('remove-addon', [TransactionController::class, 'removeAddon'])->name('doctor.transactions.remove-addon');
+    });
+
+    // Patient
+    Route::group(['prefix' => 'patients'], function () {
+        Route::get('/', [PatientController::class, 'index'])->name('doctor.patients.index');
+        Route::get('{customer_id}/examinations', [PatientController::class, 'examinations'])->name('doctor.patients.examinations');
     });
 });
 

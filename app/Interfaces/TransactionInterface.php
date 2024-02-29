@@ -4,7 +4,7 @@ namespace App\Interfaces;
 
 interface TransactionInterface
 {
-    public function store($examination_id, $data);
+    public function store($data);
     public function getByExaminationId($examination_id);
     public function generateTransactionCode($prefix, $year, $month, $branch_id);
 
@@ -19,4 +19,6 @@ interface TransactionInterface
     public function addAddon($data);
     public function getExaminationAddons($examination_id);
     public function removeAddon($id);
+
+    public function getTransactionSummary($examination_id);
 }

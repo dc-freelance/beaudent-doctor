@@ -13,7 +13,8 @@ class ExaminationTreatment extends Model
         'examination_id',
         'treatment_id',
         'qty',
-        'sub_total'
+        'sub_total',
+        'proof',
     ];
 
     public function examination()

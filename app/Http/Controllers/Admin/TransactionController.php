@@ -32,8 +32,9 @@ class TransactionController extends Controller
         $transaction       = $this->transaction->getByExaminationId($examination_id);
         $examination       = $this->examination->getById($examination_id);
         $branchId          = $examination->reservation->branch_id;
+        $customerId        = $examination->reservation->customer_id;
         $transactionCode   = $this->transaction->generateTransactionCode('PCH', date('Y'), date('m'), $branchId);
-        $treatmentDiscount = $examination->reservation->treatment->discountTreatment->discount;
+        $treatmentDiscount = $examination->reservation->treatment->discountTreatment ?? 0;
 
         // Master
         $treatments            = $this->treatment->getAll();
@@ -43,9 +44,39 @@ class TransactionController extends Controller
         $examinationItems      = $this->transaction->getExaminationItems($examination_id);
         $examinationAddons     = $this->transaction->getExaminationAddons($examination_id);
         $doctorId              = session('doctor')->id;
+        $transactionSummary    = $this->transaction->getTransactionSummary($examination_id);
 
+        return view('doctor.transaction.create', compact('transaction', 'examination', 'branchId', 'customerId', 'transactionCode', 'treatmentDiscount', 'treatments', 'examinationTreatments', 'items', 'examinationItems', 'addons', 'doctorId', 'examinationAddons', 'transactionSummary'));
+    }
 
-        return view('doctor.transaction.create', compact('transaction', 'examination', 'transactionCode', 'treatmentDiscount', 'treatments', 'examinationTreatments', 'items', 'examinationItems', 'addons', 'doctorId', 'examinationAddons'));
+    public function store(Request $request)
+    {
+        $request->validate([
+            'examination_id' => 'required|numeric',
+            'branch_id'      => 'required|numeric',
+            'doctor_id'      => 'required|numeric',
+            'customer_id'    => 'required|numeric',
+            'total'          => 'required|numeric',
+        ]);
+
+        try {
+            $this->transaction->store($request->except('_token'));
+            return response()->json(['status' => true, 'message' => 'Layanan berhasil disimpan']);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => false, 'message' => $th->getMessage()]);
+        }
+    }
+
+    public function show($examination_id)
+    {
+        $transaction           = $this->transaction->getByExaminationId($examination_id);
+        $examination           = $this->examination->getById($examination_id);
+        $examinationItems      = $this->transaction->getExaminationItems($examination_id);
+        $examinationAddons     = $this->transaction->getExaminationAddons($examination_id);
+        $examinationTreatments = $this->transaction->getExaminationTreatments($examination_id);
+        $transactionSummary    = $this->transaction->getTransactionSummary($examination_id);
+
+        return view('doctor.transaction.show', compact('transaction', 'examinationItems', 'examinationAddons', 'examinationTreatments', 'transactionSummary', 'examination'));
     }
 
     public function addTreatment(Request $request)
@@ -55,10 +86,15 @@ class TransactionController extends Controller
             'treatment_id'   => 'required|numeric',
             'qty'            => 'required|numeric',
             'sub_total'      => 'required|numeric',
+            'proof'          => 'required',
         ]);
 
-        $this->transaction->addTreatment($request->except('_token'));
-        return response()->json(true);
+        try {
+            $this->transaction->addTreatment($request->except('_token'));
+            return response()->json(['status' => true, 'message' => 'Layanan berhasil ditambahkan']);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => false, 'message' => $th->getMessage()]);
+        }
     }
 
     public function removeTreatment(Request $request)

@@ -93,7 +93,7 @@
         </div>
 
         <div class="flex justify-center mt-6">
-            <x-link-button route="{{ route('doctor.examinations.show', $examination->id) }}" color="green">
+            <x-link-button route="{{ route('doctor.examinations.show', $examination->id) }}" color="blue">
                 Simpan & Kembali
             </x-link-button>
         </div>

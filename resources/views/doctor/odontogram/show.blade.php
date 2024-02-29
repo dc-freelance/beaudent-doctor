@@ -27,9 +27,20 @@
                                 @endif
                             </td>
                             <td class="px-8 text-center">
+                                @if (isset($odontogramForTable[$i]))
+                                    <x-row-tooth :toothNumber="$i" :data="$odontogramForTable[$i]" />
+                                @endif
+                                @if ($i <= 15 && isset($odontogramForTable[$i + 40]))
+                                    <x-row-tooth :toothNumber="$i + 40" :data="$odontogramForTable[$i + 40]" />
+                                @endif
                             </td>
                             <td class="px-8 text-center">
-
+                                @if ($i <= 15 && isset($odontogramForTable[$i + 50]))
+                                    <x-row-tooth :toothNumber="$i + 50" :data="$odontogramForTable[$i + 50]" />
+                                @endif
+                                @if (isset($odontogramForTable[$i + 10]))
+                                    <x-row-tooth :toothNumber="$i + 10" :data="$odontogramForTable[$i + 10]" />
+                                @endif
                             </td>
                             <td class="text-end">
                                 @if ($i <= 15)
@@ -133,10 +144,20 @@
                                 @endif
                             </td>
                             <td class="px-8 text-center">
-                                -
+                                @if (isset($odontogramForTable[$i]))
+                                    <x-row-tooth :toothNumber="$i" :data="$odontogramForTable[$i]" />,
+                                @endif
+                                @if ($i <= 45 && isset($odontogramForTable[$i + 40]))
+                                    <x-row-tooth :toothNumber="$i + 40" :data="$odontogramForTable[$i + 40]" />
+                                @endif
                             </td>
                             <td class="px-8 text-center">
-                                -
+                                @if ($i <= 45 && isset($odontogramForTable[$i + 30]))
+                                    <x-row-tooth :toothNumber="$i + 30" :data="$odontogramForTable[$i + 30]" />
+                                @endif
+                                @if (isset($odontogramForTable[$i - 10]))
+                                    <x-row-tooth :toothNumber="$i - 10" :data="$odontogramForTable[$i - 10]" />
+                                @endif
                             </td>
                             <td class="text-end">
                                 @if ($i <= 45)
@@ -149,10 +170,15 @@
             </table>
         </div>
 
-        <div class="flex justify-center mt-6">
-            <x-link-button route="{{ route('doctor.examinations.show', $examination->id) }}" color="green">
+        <div class="flex justify-center mt-6 space-x-2">
+            <a href="{{ route('doctor.examinations.show', $examination->id) }}"
+                class="bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
                 Kembali
-            </x-link-button>
+            </a>
+            <a href="{{ route('doctor.odontogram.create', $examination->id) }}"
+                class="bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
+                Edit Odontogram
+            </a>
         </div>
     </x-card-container>
 </x-app-layout>

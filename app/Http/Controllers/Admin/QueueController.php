@@ -3,22 +3,41 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Interfaces\CustomerInterface;
 use App\Interfaces\QueueInterface;
+use App\Interfaces\TreatmentInterface;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class QueueController extends Controller
 {
     private $queue;
+    private $customer;
+    private $treatment;
 
-    public function __construct(QueueInterface $queue)
+    public function __construct(QueueInterface $queue, CustomerInterface $customer, TreatmentInterface $treatment)
     {
         $this->queue = $queue;
+        $this->customer = $customer;
+        $this->treatment = $treatment;
     }
 
     public function index(Request $request)
     {
         $queues = $this->queue->getAllReservation();
+
+        if ($request->has('customer')) {
+            $queues = $queues->where('customer_id', $request->customer);
+        }
+
+        if ($request->has('treatment')) {
+            $queues = $queues->where('treatment_id', $request->treatment);
+        }
+
+        if ($request->has('time')) {
+            $queues = $queues->where('request_time', '>=', $request->time);
+        }
+
         if ($request->ajax()) {
             return datatables()
                 ->of($queues)
@@ -27,6 +46,9 @@ class QueueController extends Controller
                 })
                 ->addColumn('branch', function ($data) {
                     return $data->branch->name;
+                })
+                ->addColumn('treatment', function ($data) {
+                    return $data->treatment->name;
                 })
                 ->addColumn('request_date', function ($data) {
                     return Carbon::parse($data->request_date)->format('d-m-Y');
@@ -44,14 +66,9 @@ class QueueController extends Controller
                 ->make(true);
         }
 
-        return view('doctor.queue.index');
-    }
-
-    public function show($id)
-    {
-        // $data = $this->queue->getReservationById($id);
-
-        // return view('doctor.queue.show', compact('data'));
+        $customers = $this->customer->getAll();
+        $treatments = $this->treatment->getAll();
+        return view('doctor.queue.index', compact('customers', 'treatments'));
     }
 
     public function updateExaminationStatus($id, Request $request)

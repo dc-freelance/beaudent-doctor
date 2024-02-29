@@ -22,6 +22,8 @@
                 active="{{ request()->routeIs('doctor.dashboard') }}" />
             <x-sidebar-item name="Daftar Antrian" icon="fas fa-user-group" route="{{ route('doctor.queues.index') }}"
                 active="{{ request()->routeIs('doctor.queues.index') || request()->routeIs('doctor.examinations.*') }}" />
+            <x-sidebar-item name="Daftar Pasien" icon="fas fa-users" route="{{ route('doctor.patients.index') }}"
+                active="{{ request()->routeIs('doctor.patients.index') || request()->routeIs('doctor.patients.*') }}" />
             <li>
                 <form action="{{ route('sign-out') }}" method="POST">
                     @csrf

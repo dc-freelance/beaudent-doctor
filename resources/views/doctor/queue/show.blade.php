@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-breadcrumb :links="[
         ['name' => 'Dashboard', 'url' => route('doctor.dashboard')],
-        ['name' => 'Daftar Pemeriksaan', 'url' => route('doctor.examinations.index')],
+        ['name' => 'Daftar Pemeriksaan', 'url' => route('doctor.patients.index')],
         ['name' => $reservation->customer->name],
     ]" title="Detail Pemeriksaan" />
 
@@ -108,6 +108,25 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Examination History -->
+                <div class="mt-12">
+                    <h3 class="text-sm font-semibold text-gray-800">RIWAYAT PEMERIKSAAN SEBELUMNYA</h3>
+                    <hr class="my-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-4">
+                        <h3 class="text-xs text-gray-500 font-semibold uppercase mb-6">Tanggal</h3>
+                        <h3 class="text-xs text-gray-500 font-semibold uppercase mb-6">Dokter</h3>
+                        <h3 class="text-xs text-gray-500 font-semibold uppercase mb-6">Branch</h3>
+                        <h3 class="text-xs text-gray-500 font-semibold uppercase mb-6">Lihat</h3>
+                    </div>
+                    @forelse ($examinationHistories as $data)
+                        @if ($data->id != $examination->id)
+                            <x-examination-history :examination="$data" />
+                        @endif
+                    @empty
+                        <p class="text-gray-500">Tidak ada riwayat pemeriksaan</p>
+                    @endforelse
+                </div>
             </x-card-container>
         </div>
         <div class="lg:w-1/3">
@@ -117,49 +136,35 @@
 
                 <div class="space-y-3">
                     <!-- Detail Examination -->
-                    <x-link-button color="blue" route="{{ route('doctor.examinations.edit', $examination->id) }}"
-                        class="w-full py-2.5">
-                        <div class="flex justify-between items-center w-full">
-                            <span>Lihat Detail Pemeriksaan</span>
-                            <i class="fas fa-clipboard-list"></i>
-                        </div>
-                    </x-link-button>
+                    <a href="{{ route('doctor.examinations.edit', $examination->id) }}"
+                        class="block text-center text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 w-full">
+                        Lihat Detail Pemeriksaan
+                    </a>
 
                     <!-- Odontogram -->
                     @if ($odontogramResults->count() > 0 && $examination)
-                        <x-link-button color="blue" route="{{ route('doctor.odontogram.show', $examination->id) }}"
-                            class="w-full py-2.5">
-                            <div class="flex justify-between items-center w-full">
-                                <span>Lihat Odontogram</span>
-                                <i class="fas fa-tooth"></i>
-                            </div>
-                        </x-link-button>
+                        <a href="{{ route('doctor.odontogram.show', $examination->id) }}"
+                            class="block text-center text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 w-full">
+                            Lihat Detail Odontogram
+                        </a>
                     @else
-                        <x-link-button color="gray" route="{{ route('doctor.odontogram.create', $examination->id) }}"
-                            class="w-full py-2.5">
-                            <div class="flex justify-between items-center w-full">
-                                <span>Tambah Odontogram</span>
-                                <i class="fas fa-arrow-right"></i>
-                            </div>
-                        </x-link-button>
+                        <a href="{{ route('doctor.odontogram.create', $examination->id) }}"
+                            class="block text-center text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 w-full">
+                            Tambah Odontogram
+                        </a>
                     @endif
 
                     <!-- Transaction -->
                     @if ($transaction && $odontogramResults->count() > 0)
-                        <x-link-button color="blue" class="w-full py-2.5">
-                            <div class="flex justify-between items-center w-full">
-                                <span>Lihat Layanan</span>
-                                <i class="fas fa-money-check-alt"></i>
-                            </div>
-                        </x-link-button>
-                    @else
-                        <x-link-button color="gray"
-                            route="{{ route('doctor.transactions.create', $examination->id) }}" class="w-full py-2.5">
-                            <div class="flex justify-between items-center w-full">
-                                <span>Tambah Pelayanan</span>
-                                <i class="fas fa-arrow-right"></i>
-                            </div>
-                        </x-link-button>
+                        <a href="{{ route('doctor.transactions.show', $examination->id) }}"
+                            class="block text-center text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 w-full">
+                            Lihat Detail Layanan
+                        </a>
+                    @elseif ($odontogramResults->count() > 0 && $examination)
+                        <a href="{{ route('doctor.transactions.create', $examination->id) }}"
+                            class="block text-center text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 w-full">
+                            Tambah Layanan
+                        </a>
                     @endif
                 </div>
             </x-card-container>

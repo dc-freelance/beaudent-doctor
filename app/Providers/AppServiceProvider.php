@@ -21,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(\App\Interfaces\TreatmentInterface::class, \App\Repositories\TreatmentRepository::class);
         $this->app->bind(\App\Interfaces\ItemInterface::class, \App\Repositories\ItemRepository::class);
         $this->app->bind(\App\Interfaces\AddonInterface::class, \App\Repositories\AddonRepository::class);
+        $this->app->bind(\App\Interfaces\CustomerInterface::class, \App\Repositories\CustomerRepository::class);
     }
 
     /**
