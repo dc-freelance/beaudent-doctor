@@ -2,21 +2,23 @@
 
     <x-breadcrumb :links="[['name' => 'Dashboard', 'url' => route('doctor.dashboard')], ['name' => 'Daftar Antrian']]" title="Daftar Antrian" />
 
-    <x-card-container>
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 items-end">
+    {{-- <x-card-container>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
             <x-select id="customer" name="customer" label="Nama Pasien">
+                <option value="">Semua Pasien</option>
                 @foreach ($customers as $customer)
                     <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                 @endforeach
             </x-select>
             <x-select id="treatment" name="treatment" label="Layanan">
+                <option value="">Semua Layanan</option>
                 @foreach ($treatments as $treatment)
                     <option value="{{ $treatment->id }}">{{ $treatment->name }}</option>
                 @endforeach
             </x-select>
             <x-input id="time" name="time" label="Waktu" type="time" name="time" />
         </div>
-    </x-card-container>
+    </x-card-container> --}}
 
     <x-card-container>
         <table id="reservationTable">
@@ -84,21 +86,21 @@
 
                 $('select.select-input').select2();
 
-                $('#customer').on('change', function() {
-                    $('#reservationTable').DataTable().ajax.url('{{ route('doctor.queues.index') }}?customer=' +
-                        $(this).val()).load();
-                });
+                // $('#customer').on('change', function() {
+                //     $('#reservationTable').DataTable().ajax.url('{{ route('doctor.queues.index') }}?customer=' +
+                //         $(this).val()).load();
+                // });
 
-                $('#treatment').on('change', function() {
-                    $('#reservationTable').DataTable().ajax.url(
-                        '{{ route('doctor.queues.index') }}?treatment=' +
-                        $(this).val()).load();
-                });
+                // $('#treatment').on('change', function() {
+                //     $('#reservationTable').DataTable().ajax.url(
+                //         '{{ route('doctor.queues.index') }}?treatment=' +
+                //         $(this).val()).load();
+                // });
 
-                $('#time').on('change', function() {
-                    $('#reservationTable').DataTable().ajax.url('{{ route('doctor.queues.index') }}?time=' +
-                        $(this).val()).load();
-                });
+                // $('#time').on('change', function() {
+                //     $('#reservationTable').DataTable().ajax.url('{{ route('doctor.queues.index') }}?time=' +
+                //         $(this).val()).load();
+                // });
             });
         </script>
     @endpush

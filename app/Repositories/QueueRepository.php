@@ -53,6 +53,7 @@ class QueueRepository implements QueueInterface
                 ->where('request_time', '>=', $configShift->start_time)
                 ->where('request_time', '<=', $configShift->end_time)
                 ->where('examination_status', 0)
+                ->orderBy('request_time', 'asc')
                 ->get();
 
             $reservations->map(function ($reservation) {

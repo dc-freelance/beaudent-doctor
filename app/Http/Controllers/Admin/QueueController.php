@@ -26,15 +26,15 @@ class QueueController extends Controller
     {
         $queues = $this->queue->getAllReservation();
 
-        if ($request->has('customer')) {
+        if ($request->has('customer') && !empty($queues)) {
             $queues = $queues->where('customer_id', $request->customer);
         }
 
-        if ($request->has('treatment')) {
+        if ($request->has('treatment') && !empty($queues)) {
             $queues = $queues->where('treatment_id', $request->treatment);
         }
 
-        if ($request->has('time')) {
+        if ($request->has('time') && !empty($queues)) {
             $queues = $queues->where('request_time', '>=', $request->time);
         }
 
