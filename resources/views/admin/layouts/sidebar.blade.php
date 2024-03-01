@@ -24,6 +24,8 @@
                 active="{{ request()->routeIs('doctor.queues.index') || request()->routeIs('doctor.examinations.*') }}" />
             <x-sidebar-item name="Daftar Pasien" icon="fas fa-users" route="{{ route('doctor.patients.index') }}"
                 active="{{ request()->routeIs('doctor.patients.index') || request()->routeIs('doctor.patients.*') }}" />
+            <x-sidebar-item name="Jadwal Dokter" route="{{ route('doctor-schedule.index') }}"
+                            active="{{ request()->routeIs('doctor-schedule.*') || request()->routeIs('doctor-schedule.index') }}" icon="fas fa-calendar-plus" />
             <li>
                 <form action="{{ route('sign-out') }}" method="POST">
                     @csrf

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\DoctorScheduleController;
 use App\Http\Controllers\Admin\ExaminationController;
 use App\Http\Controllers\Admin\MedicalRecordController;
 use App\Http\Controllers\Admin\OdontogramController;
@@ -24,6 +25,10 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['doctor']], function () 
     Route::group(['prefix' => 'queues'], function () {
         Route::get('/', [QueueController::class, 'index'])->name('doctor.queues.index');
         Route::put('{id}/update-examination-status', [QueueController::class, 'updateExaminationStatus'])->name('doctor.queues.update-examination-status');
+    });
+
+    Route::group(['prefix' => 'doctor-schedule'], function () {
+        Route::get('/', [DoctorScheduleController::class, 'index'])->name('doctor-schedule.index');
     });
 
     // Examinations
