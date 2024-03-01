@@ -78,7 +78,6 @@ class TransactionRepository implements TransactionInterface
             $data['date_time'] = date('Y-m-d H:i:s');
             $data['code']      = 'BEU-' . $this->generateTransactionCode('PYMNT', date('Y'), date('m'), $data['branch_id']);
 
-            // TODO:  Hitung di billing
             $data['ppn_status']  = 'Without';
             $data['discount']    = 0;
             $data['total_ppn']   = 0;

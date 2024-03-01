@@ -87,6 +87,12 @@
                                         <h4 class="font-semibold mb-1">{{ $data->treatment->name }}</h4>
                                         <p class="text-gray-500">Jumlah: {{ $data->qty }}</p>
                                     </div>
+                                    <div class="text-center">
+                                        <a href="{{ asset('storage/exmtreatment-proof/' . $data->proof) }}"
+                                            target="_blank" class="text-gray-500 hover:underline inline-block">
+                                            <i class="fas fa-file"></i> Lihat Dokumentasi Pemeriksaan
+                                        </a>
+                                    </div>
                                     <div class="flex items-center">
                                         <p class="text-gray-500">Rp.
                                             {{ number_format($data->sub_total, 0, ',', '.') }}</p>
