@@ -21,7 +21,11 @@
             <x-sidebar-item name="Dashboard" icon="fas fa-home" route="{{ route('doctor.dashboard') }}"
                 active="{{ request()->routeIs('doctor.dashboard') }}" />
             <x-sidebar-item name="Daftar Antrian" icon="fas fa-user-group" route="{{ route('doctor.queues.index') }}"
-                active="{{ request()->routeIs('doctor.queues.index') || request()->routeIs('doctor.examinations.*') }}" />
+                active="{{ request()->routeIs('doctor.queues.index') ||
+                    request()->routeIs('doctor.examinations.*') ||
+                    request()->routeIs('doctor.odontogram.*') }}" />
+            <x-sidebar-item name="Jadwal" icon="fas fa-calendar-alt" route="{{ route('doctor.schedule.index') }}"
+                active="{{ request()->routeIs('doctor.schedule.index') }}" />
             <x-sidebar-item name="Daftar Pasien" icon="fas fa-users" route="{{ route('doctor.patients.index') }}"
                 active="{{ request()->routeIs('doctor.patients.index') || request()->routeIs('doctor.patients.*') }}" />
             <li>

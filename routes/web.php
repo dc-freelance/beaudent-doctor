@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\MedicalRecordController;
 use App\Http\Controllers\Admin\OdontogramController;
 use App\Http\Controllers\Admin\PatientController;
 use App\Http\Controllers\Admin\QueueController;
+use App\Http\Controllers\Admin\ScheduleController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Doctor\DashboardController;
@@ -18,7 +19,12 @@ Route::post('sign-in', [AuthController::class, 'signIn'])->name('sign-in');
 Route::post('sign-out', [AuthController::class, 'signOut'])->name('sign-out');
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['doctor']], function () {
-    Route::get('/', DashboardController::class)->name('doctor.dashboard');
+    Route::get('/', [DashboardController::class, 'index'])->name('doctor.dashboard');
+
+    // Schedule
+    Route::group(['prefix' => 'schedule'], function () {
+        Route::get('/', [ScheduleController::class, 'index'])->name('doctor.schedule.index');
+    });
 
     // Queues
     Route::group(['prefix' => 'queues'], function () {

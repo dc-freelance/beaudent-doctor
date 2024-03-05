@@ -11,7 +11,7 @@
 
     <x-breadcrumb :links="[
         ['name' => 'Dashboard', 'url' => route('doctor.dashboard')],
-        ['name' => 'Detail Pemeriksaan', 'url' => route('doctor.examinations.show', $examination->reservation->id)],
+        ['name' => 'Detail Pemeriksaan', 'url' => route('doctor.examinations.show', $examination->id)],
         ['name' => 'Detail Odontogram'],
     ]" title="Detail Odontogram" />
 

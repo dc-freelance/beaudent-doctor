@@ -75,4 +75,9 @@ class Examination extends Model
     {
         return $this->hasMany(ExaminationItem::class);
     }
+
+    public function transactions()
+    {
+        return $this->hasOne(Transaction::class);
+    }
 }
