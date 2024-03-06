@@ -56,7 +56,7 @@ class Examination extends Model
         return $this->belongsTo(Doctor::class);
     }
 
-    public function addonExamination()
+    public function addonExaminations()
     {
         return $this->hasMany(AddonExamination::class);
     }
@@ -76,7 +76,7 @@ class Examination extends Model
         return $this->hasMany(ExaminationItem::class);
     }
 
-    public function transactions()
+    public function transaction()
     {
         return $this->hasOne(Transaction::class);
     }

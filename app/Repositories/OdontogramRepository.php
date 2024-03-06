@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Interfaces\OdontogramInterface;
 use App\Models\Odontogram;
-use App\Models\OdontogramResult;
 
 class OdontogramRepository implements OdontogramInterface
 {

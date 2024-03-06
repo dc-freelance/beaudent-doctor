@@ -18,26 +18,34 @@ use Illuminate\Support\Facades\Storage;
 class TransactionRepository implements TransactionInterface
 {
     private $transaction;
+
     private $branch;
+
     private $sequence;
+
     private $examinationTreatment;
+
     private $examinationItem;
+
     private $examinationAddon;
+
     private $treatmentBonus;
+
     private $examination;
+
     private $doctorBonus;
 
     public function __construct(Transaction $transaction, Branch $branch, Sequence $sequence, ExaminationTreatment $examinationTreatment, ExaminationItem $examinationItem, AddonExamination $examinationAddon, TreatmentBonus $treatmentBonus, Examination $examination, DoctorBonus $doctorBonus)
     {
-        $this->transaction          = $transaction;
-        $this->branch               = $branch;
-        $this->sequence             = $sequence;
+        $this->transaction = $transaction;
+        $this->branch = $branch;
+        $this->sequence = $sequence;
         $this->examinationTreatment = $examinationTreatment;
-        $this->examinationItem      = $examinationItem;
-        $this->examinationAddon     = $examinationAddon;
-        $this->treatmentBonus       = $treatmentBonus;
-        $this->examination          = $examination;
-        $this->doctorBonus          = $doctorBonus;
+        $this->examinationItem = $examinationItem;
+        $this->examinationAddon = $examinationAddon;
+        $this->treatmentBonus = $treatmentBonus;
+        $this->examination = $examination;
+        $this->doctorBonus = $doctorBonus;
     }
 
     public function store($data)
@@ -54,17 +62,17 @@ class TransactionRepository implements TransactionInterface
                         $totalBonus = $examinationTreatment->sub_total * $treatmentBonus->bonus_rate / 100;
                         $this->doctorBonus->create([
                             'examination_treatment_id' => $examinationTreatment->id,
-                            'doctor_id'                => $doctor->id,
-                            'bonus'                    => $totalBonus,
-                            'branch_id'                => $data['branch_id'],
+                            'doctor_id' => $doctor->id,
+                            'bonus' => $totalBonus,
+                            'branch_id' => $data['branch_id'],
                         ]);
                     } else {
                         $totalBonus = $treatmentBonus->bonus_rate;
                         $this->doctorBonus->create([
                             'examination_treatment_id' => $examinationTreatment->id,
-                            'doctor_id'                => $doctor->id,
-                            'bonus'                    => $totalBonus,
-                            'branch_id'                => $data['branch_id'],
+                            'doctor_id' => $doctor->id,
+                            'bonus' => $totalBonus,
+                            'branch_id' => $data['branch_id'],
                         ]);
                     }
                 }
@@ -76,11 +84,11 @@ class TransactionRepository implements TransactionInterface
 
         try {
             $data['date_time'] = date('Y-m-d H:i:s');
-            $data['code']      = 'BEU-' . $this->generateTransactionCode('PYMNT', date('Y'), date('m'), $data['branch_id']);
+            $data['code'] = 'BEU-'.$this->generateTransactionCode('PYMNT', date('Y'), date('m'), $data['branch_id']);
 
-            $data['ppn_status']  = 'Without';
-            $data['discount']    = 0;
-            $data['total_ppn']   = 0;
+            $data['ppn_status'] = 'Without';
+            $data['discount'] = 0;
+            $data['total_ppn'] = 0;
             $data['grand_total'] = $data['total'];
 
             $this->transaction->create($data);
@@ -119,23 +127,23 @@ class TransactionRepository implements TransactionInterface
             $sequence->increment('no');
         } else {
             $sequence = $this->sequence->create([
-                'code'      => $prefix,
-                'year'      => $year,
-                'month'     => $month,
+                'code' => $prefix,
+                'year' => $year,
+                'month' => $month,
                 'branch_id' => $branch_id,
-                'no'        => 1,
+                'no' => 1,
             ]);
         }
 
         $sequence->no = str_pad($sequence->no, 3, '0', STR_PAD_LEFT);
 
-        return $sequence->code . '-' . $sequence->year . '-' . $sequence->month . '-' . $sequence->no;
+        return $sequence->code.'-'.$sequence->year.'-'.$sequence->month.'-'.$sequence->no;
     }
 
     public function addTreatment($data)
     {
         try {
-            $proofFilename = uniqid() . '.' . $data['proof']->extension();
+            $proofFilename = uniqid().'.'.$data['proof']->extension();
             $data['proof']->storeAs('public/exmtreatment-proof', $proofFilename);
             $data['proof'] = $proofFilename;
 
@@ -143,9 +151,10 @@ class TransactionRepository implements TransactionInterface
             $treatments = $this->examinationTreatment
                 ->with('treatment')
                 ->where('examination_id', $data['examination_id'])->get();
+
             return $treatments;
         } catch (\Throwable $th) {
-            Storage::delete('public/exmtreatment-proof/' . $proofFilename);
+            Storage::delete('public/exmtreatment-proof/'.$proofFilename);
             throw $th;
         }
     }
@@ -160,7 +169,7 @@ class TransactionRepository implements TransactionInterface
     public function removeTreatment($id)
     {
         $examinationTreatment = $this->examinationTreatment->find($id);
-        Storage::delete('public/exmtreatment-proof/' . $examinationTreatment->proof);
+        Storage::delete('public/exmtreatment-proof/'.$examinationTreatment->proof);
         $examinationTreatment->delete();
     }
 
@@ -168,6 +177,7 @@ class TransactionRepository implements TransactionInterface
     {
         $this->examinationItem->create($data);
         $items = $this->examinationItem->where('examination_id', $data['examination_id'])->get();
+
         return $items;
     }
 
@@ -186,6 +196,7 @@ class TransactionRepository implements TransactionInterface
     {
         $this->examinationAddon->create($data);
         $addons = $this->examinationAddon->where('examination_id', $data['examination_id'])->get();
+
         return $addons;
     }
 
@@ -215,14 +226,14 @@ class TransactionRepository implements TransactionInterface
             ->sum('sub_total');
 
         $treatments = $treatments ?? 0;
-        $items      = $items ?? 0;
-        $addons     = $addons ?? 0;
+        $items = $items ?? 0;
+        $addons = $addons ?? 0;
 
         return [
             'treatments' => $treatments,
-            'items'      => $items,
-            'addons'     => $addons,
-            'total'      => $treatments + $items + $addons,
+            'items' => $items,
+            'addons' => $addons,
+            'total' => $treatments + $items + $addons,
         ];
     }
 }

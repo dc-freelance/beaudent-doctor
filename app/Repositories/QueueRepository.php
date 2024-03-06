@@ -10,16 +10,20 @@ use App\Models\Doctor;
 use App\Models\DoctorSchedule;
 use App\Models\Reservation;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class QueueRepository implements QueueInterface
 {
     private $reservation;
+
     private $configShift;
+
     private $doctor;
+
     private $customer;
+
     private $branch;
+
     private $doctorSchedule;
 
     public function __construct(
@@ -30,11 +34,11 @@ class QueueRepository implements QueueInterface
         Branch $branch,
         DoctorSchedule $doctorSchedule
     ) {
-        $this->reservation    = $reservation;
-        $this->doctor         = $doctor;
-        $this->configShift    = $configShift;
-        $this->customer       = $customer;
-        $this->branch         = $branch;
+        $this->reservation = $reservation;
+        $this->doctor = $doctor;
+        $this->configShift = $configShift;
+        $this->customer = $customer;
+        $this->branch = $branch;
         $this->doctorSchedule = $doctorSchedule;
     }
 
@@ -75,7 +79,7 @@ class QueueRepository implements QueueInterface
             ->where('date', Carbon::now('Asia/Jakarta')->format('Y-m-d'))
             ->first();
 
-        if (!$reservations || !$doctorSchedule) {
+        if (! $reservations || ! $doctorSchedule) {
             return [];
         }
 
@@ -98,5 +102,18 @@ class QueueRepository implements QueueInterface
     public function updateExaminationStatus($id, $status)
     {
         return $this->reservation->where('id', $id)->update($status);
+    }
+
+    public function getWaitingList()
+    {
+        $reservations = $this->reservation
+            ->where([
+                ['status', 'Confirm'],
+                ['request_date', Carbon::now('Asia/Jakarta')->format('Y-m-d')],
+                ['examination_status', 0],
+            ])
+            ->get();
+
+        return $reservations;
     }
 }

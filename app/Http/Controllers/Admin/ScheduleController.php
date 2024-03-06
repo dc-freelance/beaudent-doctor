@@ -32,6 +32,7 @@ class ScheduleController extends Controller
                 })
                 ->addColumn('status', function ($data) {
                     $status = date('Y-m-d H:i', strtotime($data->created_at)) == date('Y-m-d H:i') ? 'now' : (date('Y-m-d H:i', strtotime($data->created_at)) < date('Y-m-d H:i') ? 'done' : 'upcoming');
+
                     return view('admin.schedule._status', compact('status'));
                 })
                 ->addIndexColumn()

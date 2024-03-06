@@ -19,7 +19,7 @@ class ExaminationItem extends Model
         'day',
         'period',
         'duration',
-        'guide'
+        'guide',
     ];
 
     public function examination()

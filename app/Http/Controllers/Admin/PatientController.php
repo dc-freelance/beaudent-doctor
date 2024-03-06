@@ -47,6 +47,7 @@ class PatientController extends Controller
     {
         $data = $this->examination->getExaminationByCustomerId($customer_id);
         $examinationHistories = $data['examinations'];
+
         return view('admin.patient.examinations', compact('data', 'examinationHistories'));
     }
 }

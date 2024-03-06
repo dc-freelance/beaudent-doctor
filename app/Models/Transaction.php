@@ -44,6 +44,6 @@ class Transaction extends Model
 
     public function examination()
     {
-        return $this->hasOne(Examination::class, 'transaction_id', 'id');
+        return $this->belongsTo(Examination::class, 'examination_id', 'id');
     }
 }

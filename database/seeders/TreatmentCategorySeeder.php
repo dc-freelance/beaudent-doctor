@@ -2,9 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\TreatmentCategories;
 use App\Models\TreatmentCategory;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class TreatmentCategorySeeder extends Seeder
@@ -25,12 +23,12 @@ class TreatmentCategorySeeder extends Seeder
             'Implant',
             'Restorative',
             'Emergency',
-            'Other'
+            'Other',
         ];
 
         foreach ($categories as $category) {
             TreatmentCategory::create([
-                'category' => $category
+                'category' => $category,
             ]);
         }
     }

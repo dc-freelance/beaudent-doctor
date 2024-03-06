@@ -9,4 +9,6 @@ interface QueueInterface
     public function getReservationById($id);
 
     public function updateExaminationStatus($id, $status);
+
+    public function getWaitingList();
 }

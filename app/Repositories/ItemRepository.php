@@ -10,6 +10,7 @@ use Carbon\Carbon;
 class ItemRepository implements ItemInterface
 {
     private $item;
+
     private $itemUnit;
 
     public function __construct(Item $item, Unit $itemUnit)
@@ -21,6 +22,7 @@ class ItemRepository implements ItemInterface
     public function getAll()
     {
         $currentDate = Carbon::now()->locale('id')->format('Y-m-d');
+
         return $this->item->with(['unit', 'category', 'discountItem.discount' => function ($query) use ($currentDate) {
             $query->where('start_date', '<=', $currentDate)->where('end_date', '>=', $currentDate);
         }])->get();

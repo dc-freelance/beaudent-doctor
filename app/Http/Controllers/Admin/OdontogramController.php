@@ -7,27 +7,28 @@ use App\Interfaces\ExaminationInterface;
 use App\Interfaces\OdontogramInterface;
 use App\Interfaces\OdontogramResultInterface;
 use Illuminate\Http\Request;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
 
 class OdontogramController extends Controller
 {
     private $odontogram;
+
     private $odontogramResult;
+
     private $examination;
 
     public function __construct(OdontogramInterface $odontogram, OdontogramResultInterface $odontogramResult, ExaminationInterface $examination)
     {
-        $this->odontogram       = $odontogram;
+        $this->odontogram = $odontogram;
         $this->odontogramResult = $odontogramResult;
-        $this->examination      = $examination;
+        $this->examination = $examination;
     }
 
     public function create($examination_id)
     {
-        $odontograms       = $this->odontogram->get();
-        $examination       = $this->examination->getById($examination_id);
+        $odontograms = $this->odontogram->get();
+        $examination = $this->examination->getById($examination_id);
         $odontogramResults = $this->odontogramResult->getByExaminationId($examination_id);
-        $odontogramGroup   = $this->odontogramResult->groupOdontogramResults($odontogramResults);
+        $odontogramGroup = $this->odontogramResult->groupOdontogramResults($odontogramResults);
 
         return view('doctor.odontogram.create', compact('odontograms', 'examination', 'odontogramGroup'));
     }
@@ -36,6 +37,7 @@ class OdontogramController extends Controller
     {
         $this->odontogramResult->deleteDiagnose($id);
         toast('Diagnosa berhasil dihapus', 'success');
+
         return redirect()->back();
     }
 
@@ -50,15 +52,16 @@ class OdontogramController extends Controller
     public function storeDiagnose(Request $request)
     {
         $odontogramResult = $this->odontogramResult->storeDiagnose($request->except('_token'));
+
         return view('doctor.odontogram.components._render_tooth', compact('odontogramResult'));
     }
 
     public function show($examination_id)
     {
-        $odontograms        = $this->odontogram->get();
-        $examination        = $this->examination->getById($examination_id);
-        $odontogramResults  = $this->odontogramResult->getByExaminationId($examination_id);
-        $odontogramGroup    = $this->odontogramResult->groupOdontogramResults($odontogramResults);
+        $odontograms = $this->odontogram->get();
+        $examination = $this->examination->getById($examination_id);
+        $odontogramResults = $this->odontogramResult->getByExaminationId($examination_id);
+        $odontogramGroup = $this->odontogramResult->groupOdontogramResults($odontogramResults);
         $odontogramForTable = $this->odontogramResult->groupOdontogramResultsForTable($odontogramGroup);
 
         return view('doctor.odontogram.show', compact('odontograms', 'examination', 'odontogramGroup', 'odontogramResults', 'odontogramForTable'));

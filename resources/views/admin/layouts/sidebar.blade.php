@@ -13,19 +13,20 @@
     aria-label="Sidebar">
     <div class="h-full px-4 py-8 overflow-y-auto bg-white">
         {{-- Logo --}}
-        {{-- <a href="#" class="flex items-center justify-center mb-4">
-            <img src="{{ asset('assets/images/logo.png') }}" class="mr-3 object-contain h-20" alt="logo"
+        <a href="#" class="flex items-center justify-center mb-4">
+            <img src="{{ asset('assets/image/logo.jpg') }}" class="mr-3 object-contain h-20" alt="logo"
                 class="mix-blend-multiply" />
-        </a> --}}
+        </a>
         <ul class="space-y-1">
             <x-sidebar-item name="Dashboard" icon="fas fa-home" route="{{ route('doctor.dashboard') }}"
                 active="{{ request()->routeIs('doctor.dashboard') }}" />
+            <x-sidebar-item name="Jadwal Dokter" icon="fas fa-calendar-alt" route="{{ route('doctor.schedule.index') }}"
+                active="{{ request()->routeIs('doctor.schedule.index') }}" />
             <x-sidebar-item name="Daftar Antrian" icon="fas fa-user-group" route="{{ route('doctor.queues.index') }}"
                 active="{{ request()->routeIs('doctor.queues.index') ||
                     request()->routeIs('doctor.examinations.*') ||
-                    request()->routeIs('doctor.odontogram.*') }}" />
-            <x-sidebar-item name="Jadwal" icon="fas fa-calendar-alt" route="{{ route('doctor.schedule.index') }}"
-                active="{{ request()->routeIs('doctor.schedule.index') }}" />
+                    request()->routeIs('doctor.odontogram.*') ||
+                    request()->routeIs('doctor.transactions.*') }}" />
             <x-sidebar-item name="Daftar Pasien" icon="fas fa-users" route="{{ route('doctor.patients.index') }}"
                 active="{{ request()->routeIs('doctor.patients.index') || request()->routeIs('doctor.patients.*') }}" />
             <li>

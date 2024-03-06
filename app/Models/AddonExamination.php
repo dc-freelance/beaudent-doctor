@@ -18,7 +18,7 @@ class AddonExamination extends Model
         'addon_id',
         'fee',
         'sub_total',
-        'qty'
+        'qty',
     ];
 
     public function examination()

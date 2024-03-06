@@ -1,13 +1,34 @@
 <x-app-layout>
-    <x-breadcrumb :links="[['name' => 'Dashboard', 'url' => route('doctor.dashboard')]]" title="Dashboard" />
+    <x-breadcrumb :links="[['name' => 'Dashboard', 'url' => route('doctor.dashboard')]]" :title="'Selamat Datang, ' . session('doctor')->name . '!'" />
+
+    @if ($totalWaitingList > 0)
+        <div class="flex items-center p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50" role="alert">
+            <i class="fas fa-info-circle me-2 w-4 h-4"></i>
+            <span class="sr-only">Info</span>
+            <div>
+                <span class="font-medium">
+                    Menunggu
+                </span> - Terdapat {{ $totalWaitingList }} pasien yang menunggu untuk diperiksa hari ini! <a
+                    href="{{ route('doctor.queues.index') }}" class="underline text-yellow-800 font-medium">Lihat Daftar
+                    Antrian</a>
+            </div>
+        </div>
+    @endif
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+        <x-card-stat title="Total Fee" :data="'Rp ' . number_format($totalFee, 0, ',', '.')" />
+        <x-card-stat title="Total Pasien" :data="$totalPatient" />
+        <x-card-stat title="Total Pemeriksaan" :data="$totalExamination" />
+    </div>
 
     <x-card-container>
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 items-end">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 items-end">
             <x-input id="start_date" label="Tanggal Awal" type="date" name="start_date" />
             <x-input id="end_date" label="Tanggal Akhir" type="date" name="end_date" />
             <button type="button" id="buttonFilter"
-                class="focus:outline-none text-white bg-gray-800 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2">
-                Filter Data
+                class="focus:outline-none text-white bg-green-700 hover:bg-green-700 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2">
+                <i class="fas fa-filter me-2"></i>
+                Filter Rekap Fee
             </button>
         </div>
     </x-card-container>
@@ -27,6 +48,7 @@
                             title: 'Oops...',
                             text: 'Tanggal awal dan tanggal akhir harus diisi!',
                         });
+                        return false;
                     }
 
                     $.ajax({
@@ -43,6 +65,7 @@
                                 responsive: true,
                                 processing: true,
                             });
+                            return false;
                         },
                         complete: () => {
                             return false;

@@ -9,12 +9,13 @@ use App\Models\OdontogramResult;
 class OdontogramResultRepository implements OdontogramResultInterface
 {
     private $odontogramResult;
+
     private $odontogram;
 
     public function __construct(OdontogramResult $odontogramResult, Odontogram $odontogram)
     {
         $this->odontogramResult = $odontogramResult;
-        $this->odontogram       = $odontogram;
+        $this->odontogram = $odontogram;
     }
 
     public function get()
@@ -34,17 +35,17 @@ class OdontogramResultRepository implements OdontogramResultInterface
         foreach ($groupedOdontogramResults as $toothNumber => $toothPositions) {
             $groupedOdontogramResults[$toothNumber] = [
                 'img_name' => $toothPositions->first()['img_name'],
-                'side'     => $toothPositions->first()['side'] ?? null,
-                'top'      => $toothPositions->where('tooth_position', 'top')->first()['diagnosis'] ?? null,
-                'bottom'   => $toothPositions->where('tooth_position', 'bottom')->first()['diagnosis'] ?? null,
-                'left'     => $toothPositions->where('tooth_position', 'left')->first()['diagnosis'] ?? null,
-                'right'    => $toothPositions->where('tooth_position', 'right')->first()['diagnosis'] ?? null,
-                'center'   => $toothPositions->where('tooth_position', 'center')->first()['diagnosis'] ?? null,
-                'all'      => $toothPositions->where('tooth_position', 'all')->map(function ($item) {
+                'side' => $toothPositions->first()['side'] ?? null,
+                'top' => $toothPositions->where('tooth_position', 'top')->first()['diagnosis'] ?? null,
+                'bottom' => $toothPositions->where('tooth_position', 'bottom')->first()['diagnosis'] ?? null,
+                'left' => $toothPositions->where('tooth_position', 'left')->first()['diagnosis'] ?? null,
+                'right' => $toothPositions->where('tooth_position', 'right')->first()['diagnosis'] ?? null,
+                'center' => $toothPositions->where('tooth_position', 'center')->first()['diagnosis'] ?? null,
+                'all' => $toothPositions->where('tooth_position', 'all')->map(function ($item) {
                     return [
-                        'id'         => $item['id'],
-                        'diagnosis'  => $item['diagnosis'],
-                        'remark'     => $item['remark'],
+                        'id' => $item['id'],
+                        'diagnosis' => $item['diagnosis'],
+                        'remark' => $item['remark'],
                         'odontogram' => $this->odontogram->find($item['odontogram_id']),
                         'is_outside' => $this->odontogram->find($item['odontogram_id'])->is_outside,
                     ];
@@ -69,17 +70,17 @@ class OdontogramResultRepository implements OdontogramResultInterface
     {
         foreach ($data as $key => $value) {
             $data[$key] = [
-                'id'           => $value['id'],
+                'id' => $value['id'],
                 'tooth_number' => $value['tooth_number'],
-                'top'          => $value['tooth_position'] === 'top' ? $value['diagnosis'] : null,
-                'bottom'       => $value['tooth_position'] === 'bottom' ? $value['diagnosis'] : null,
-                'left'         => $value['tooth_position'] === 'left' ? $value['diagnosis'] : null,
-                'right'        => $value['tooth_position'] === 'right' ? $value['diagnosis'] : null,
-                'center'       => $value['tooth_position'] === 'center' ? $value['diagnosis'] : null,
-                'all'          => $value['tooth_position'] === 'all' ? $value['diagnosis'] : null,
-                'is_outside'   => $this->odontogram->find(($value['odontogram_id']))->is_outside,
-                'img_name'     => $value['img_name'] ?? '',
-                'side'         => $value['side'] ?? '',
+                'top' => $value['tooth_position'] === 'top' ? $value['diagnosis'] : null,
+                'bottom' => $value['tooth_position'] === 'bottom' ? $value['diagnosis'] : null,
+                'left' => $value['tooth_position'] === 'left' ? $value['diagnosis'] : null,
+                'right' => $value['tooth_position'] === 'right' ? $value['diagnosis'] : null,
+                'center' => $value['tooth_position'] === 'center' ? $value['diagnosis'] : null,
+                'all' => $value['tooth_position'] === 'all' ? $value['diagnosis'] : null,
+                'is_outside' => $this->odontogram->find(($value['odontogram_id']))->is_outside,
+                'img_name' => $value['img_name'] ?? '',
+                'side' => $value['side'] ?? '',
             ];
         }
 
@@ -94,27 +95,27 @@ class OdontogramResultRepository implements OdontogramResultInterface
         if ($data['tooth_position'] === 'all') {
             $odontogramResult = $this->odontogramResult->create([
                 'examination_id' => $data['examination_id'],
-                'tooth_number'   => $data['tooth_number'],
+                'tooth_number' => $data['tooth_number'],
                 'tooth_position' => $data['tooth_position'],
-                'odontogram_id'  => $data['odontogram_id'],
-                'img_name'       => $imgName,
-                'side'           => $data['side'],
-                'diagnosis'      => $data['diagnosis'],
-                'remark'         => $data['remark'] ?? null,
+                'odontogram_id' => $data['odontogram_id'],
+                'img_name' => $imgName,
+                'side' => $data['side'],
+                'diagnosis' => $data['diagnosis'],
+                'remark' => $data['remark'] ?? null,
             ]);
         } else {
             $odontogramResult = $this->odontogramResult->updateOrCreate(
                 [
                     'examination_id' => $data['examination_id'],
-                    'tooth_number'   => $data['tooth_number'],
+                    'tooth_number' => $data['tooth_number'],
                     'tooth_position' => $data['tooth_position'],
                 ],
                 [
                     'odontogram_id' => $data['odontogram_id'],
-                    'img_name'      => $imgName,
-                    'side'          => $data['side'],
-                    'diagnosis'     => $data['diagnosis'],
-                    'remark'        => $data['remark'] ?? null,
+                    'img_name' => $imgName,
+                    'side' => $data['side'],
+                    'diagnosis' => $data['diagnosis'],
+                    'remark' => $data['remark'] ?? null,
                 ]
             );
         }
@@ -132,10 +133,10 @@ class OdontogramResultRepository implements OdontogramResultInterface
     private function groupOdontogramResultAfterStore($data)
     {
         $singleData = [
-            'img_name'     => $data->first()['img_name'] ?? '',
-            'id'           => $data->first()['id'],
+            'img_name' => $data->first()['img_name'] ?? '',
+            'id' => $data->first()['id'],
             'tooth_number' => $data->first()['tooth_number'],
-            'side'         => $data->first()['side'] ?? '',
+            'side' => $data->first()['side'] ?? '',
         ];
 
         $positions = ['top', 'bottom', 'left', 'right', 'center'];
@@ -145,9 +146,9 @@ class OdontogramResultRepository implements OdontogramResultInterface
 
         $singleData['all'] = $data->where('tooth_position', 'all')->map(function ($item) {
             return [
-                'id'         => $item['id'],
-                'diagnosis'  => $item['diagnosis'],
-                'remark'     => $item['remark'],
+                'id' => $item['id'],
+                'diagnosis' => $item['diagnosis'],
+                'remark' => $item['remark'],
                 'odontogram' => $this->odontogram->find(($item['odontogram_id'])),
                 'is_outside' => $this->odontogram->find(($item['odontogram_id']))->is_outside,
             ];
@@ -159,6 +160,7 @@ class OdontogramResultRepository implements OdontogramResultInterface
     public function groupOdontogramResultsForTable($odontogramResults)
     {
         $odontograms = $this->odontogramResult->get()->groupBy('tooth_number');
+
         return $odontograms;
     }
 }
