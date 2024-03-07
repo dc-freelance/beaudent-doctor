@@ -8,8 +8,9 @@
     'value' => '',
     'readonly' => '',
     'disabled' => '',
+    'hide' => false,
 ])
-<div>
+<div class="{{ $hide ? 'hidden' : '' }}">
     <label class="block mb-2 text-sm font-semibold text-gray-900 dark:text-white" for="{{ $id }}">
         {{ $label }} {!! $required ? '<span class="text-red-600">*</span>' : '' !!}
     </label>

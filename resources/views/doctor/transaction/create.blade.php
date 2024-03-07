@@ -5,7 +5,7 @@
         ['name' => 'Layanan'],
     ]" title="Layanan" />
 
-    <div class="xl:w-3/5 mx-auto">
+    <div class="xl:w-3/5 mx-auto mb-12">
         <x-card-container>
             <div class="flex justify-between">
                 <div>
@@ -95,8 +95,8 @@
                                         </a>
                                     </div>
                                     <div class="flex items-center justify-end">
-                                        <p class="text-gray-500">Rp.
-                                            {{ number_format($data->sub_total, 0, ',', '.') }}</p>
+                                        {{-- <p class="text-gray-500">Rp.
+                                            {{ number_format($data->sub_total, 0, ',', '.') }}</p> --}}
                                         <button type="button" onclick="removeTreatment({{ $data->id }})"
                                             class="text-red-600 hover:text-red-900 focus:ring-4 focus:outline-none ms-4 font-medium">
                                             Hapus
@@ -139,8 +139,8 @@
                                         </p>
                                     </div>
                                     <div class="flex items-center">
-                                        <p class="text-gray-500">Rp.
-                                            {{ number_format($data->sub_total, 0, ',', '.') }}</p>
+                                        {{-- <p class="text-gray-500">Rp.
+                                            {{ number_format($data->sub_total, 0, ',', '.') }}</p> --}}
                                         <button type="button"
                                             onclick="removeItem('{{ $data->id }}', '{{ $data->item->name }}')"
                                             class="text-red-600 hover:text-red-900 focus:ring-4 focus:outline-none ms-4 font-medium">
@@ -176,12 +176,12 @@
                                     <div class="space-y-1">
                                         <h4 class="font-semibold">{{ $data->addon->name }}</h4>
                                         <p class="text-gray-500">Jumlah: {{ $data->qty }}</p>
-                                        <p class="text-gray-500">+fee :
-                                            {{ number_format($data->fee, 0, ',', '.') }}</p>
+                                        {{-- <p class="text-gray-500">+fee :
+                                            {{ number_format($data->fee, 0, ',', '.') }}</p> --}}
                                     </div>
                                     <div class="flex items-center">
-                                        <p class="text-gray-500">Rp.
-                                            {{ number_format($data->sub_total, 0, ',', '.') }}</p>
+                                        {{-- <p class="text-gray-500">Rp.
+                                            {{ number_format($data->sub_total, 0, ',', '.') }}</p> --}}
                                         <button type="button" onclick="removeAddon({{ $data->id }})"
                                             class="text-red-600 hover:text-red-900 focus:ring-4 focus:outline-none ms-4 font-medium">
                                             Hapus
@@ -191,8 +191,7 @@
                             @endforeach
                         </div>
                         <div class="flex justify-center mt-8">
-                            <button data-modal-target="modal-addon" data-modal-toggle="modal-addon"
-                                id="addAddonModal"
+                            <button data-modal-target="modal-addon" data-modal-toggle="modal-addon" id="addAddonModal"
                                 class="text-gray-900 hover:text-white border-2 border-gray-200 hover:bg-blue-900 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                                 type="button">
                                 <i class="fas fa-plus"></i> Tambah Addon
@@ -202,7 +201,7 @@
                 </div>
 
                 <!-- Summary -->
-                <h2>
+                {{-- <h2>
                     <button type="button"
                         class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-gray-200 focus:ring-4 focus:ring-gray-200 gap-3">
                         <span>Total</span>
@@ -231,7 +230,7 @@
                                 {{ number_format($transactionSummary['total'], 0, ',', '.') }}</p>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </x-card-container>
 
@@ -317,12 +316,10 @@
                             <p class="me-7" id="choose-period">Periode yang dipilih</p>
                         </div>
                     </div>
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <x-input id="item_qty" label="Jumlah" name="qty" type="number" required />
-                        <x-input id="item_price" label="Harga" name="price" type="text" readonly />
-                    </div>
-                    <x-input id="item_discount" label="Diskon" name="discount" type="text" readonly />
-                    <x-input id="item_sub_total" label="Sub Total" name="sub_total" type="text" readonly />
+                    <x-input id="item_qty" label="Jumlah" name="qty" type="number" required />
+                    <x-input id="item_price" label="Harga" name="price" type="text" readonly hide />
+                    <x-input id="item_discount" label="Diskon" name="discount" type="text" readonly hide />
+                    <x-input id="item_sub_total" label="Sub Total" name="sub_total" type="text" readonly hide />
                     <x-input id="guide" label="Petunjuk Penggunaan" name="guide" type="text" />
                 </div>
                 <!-- Modal footer -->
@@ -367,10 +364,10 @@
                     </x-select>
                     <x-input-file id="proof" label="Dokumentasi Pemeriksaan" name="proof" required />
                     <x-input id="treatment_code" label="Kode Layanan" name="code" type="text" readonly />
-                    <x-input id="treatment_price" label="Harga" name="price" type="text" readonly />
-                    <x-input id="treatment_discount" label="Diskon" name="discount" type="text" readonly />
+                    <x-input id="treatment_price" label="Harga" name="price" type="text" readonly hide />
+                    <x-input id="treatment_discount" label="Diskon" name="discount" type="text" readonly hide />
                     <x-input id="qty" label="Jumlah" name="qty" type="number" required />
-                    <x-input id="sub_total" label="Sub Total" name="sub_total" type="text" readonly />
+                    <x-input id="sub_total" label="Sub Total" name="sub_total" type="text" readonly hide />
                 </div>
                 <!-- Modal footer -->
                 <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
@@ -413,12 +410,12 @@
                                 data-fee-percentage="{{ $addon->fee_percentage }}">{{ $addon->name }}</option>
                         @endforeach
                     </x-select>
-                    <x-input id="price" label="Harga" name="price" type="text" readonly />
+                    <x-input id="price" label="Harga" name="price" type="text" readonly hide />
                     <x-input id="fee_percentage" label="Persentase Biaya" name="fee_percentage" type="text"
-                        readonly />
+                        readonly hide />
                     <x-input id="qty" label="Jumlah" name="qty" type="number" required />
-                    <x-input id="fee" label="Fee Dokter" name="fee" type="text" readonly />
-                    <x-input id="sub_total" label="Sub Total" name="sub_total" type="text" readonly />
+                    <x-input id="fee" label="Fee Dokter" name="fee" type="text" readonly hide />
+                    <x-input id="sub_total" label="Sub Total" name="sub_total" type="text" readonly hide />
                 </div>
                 <!-- Modal footer -->
                 <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
@@ -433,6 +430,18 @@
 
     @push('js-internal')
         <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'bottom-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
             $(function() {
                 $('#submitTransaction').on('click', function(e) {
                     Swal.fire({
@@ -553,11 +562,9 @@
                             },
                             dataType: "json",
                             success: function(response) {
-                                Swal.fire({
+                                Toast.fire({
                                     icon: 'success',
-                                    title: 'Berhasil',
-                                    text: 'Layanan berhasil dihapus',
-                                    showConfirmButton: false,
+                                    title: 'Layanan berhasil dihapus'
                                 });
                                 setTimeout(() => {
                                     location.reload();
@@ -589,8 +596,10 @@
                         let hasDiscount = treatmentSelected.discount_treatment;
 
                         if (hasDiscount && isDiscountActive) {
-                            hasDiscount = hasDiscount.discount;
-                            isDiscountActive = hasDiscount.discount;
+                            if (hasDiscount.discount != null) {
+                                hasDiscount = hasDiscount.discount;
+                                isDiscountActive = hasDiscount.discount;
+                            }
                         }
 
                         if (treatmentSelected.discount_treatment == null) {
@@ -698,11 +707,9 @@
                         dataType: "json",
                         success: function(response) {
                             if (response.status == true) {
-                                Swal.fire({
+                                Toast.fire({
                                     icon: 'success',
-                                    title: 'Berhasil',
-                                    text: 'Layanan berhasil ditambahkan',
-                                    showConfirmButton: false,
+                                    title: 'Layanan berhasil ditambahkan'
                                 });
                                 setTimeout(() => {
                                     location.reload();
@@ -760,11 +767,9 @@
                             },
                             dataType: "json",
                             success: function(response) {
-                                Swal.fire({
+                                Toast.fire({
                                     icon: 'success',
-                                    title: 'Berhasil',
-                                    text: 'Obat berhasil dihapus',
-                                    showConfirmButton: false,
+                                    title: 'Obat berhasil dihapus'
                                 });
                                 setTimeout(() => {
                                     location.reload();
@@ -935,11 +940,9 @@
                     data: examinationItemsFormData,
                     dataType: "json",
                     success: function(response) {
-                        Swal.fire({
+                        Toast.fire({
                             icon: 'success',
-                            title: 'Berhasil',
-                            text: 'Obat berhasil ditambahkan',
-                            showConfirmButton: false,
+                            title: 'Obat berhasil ditambahkan'
                         });
                         setTimeout(() => {
                             location.reload();
@@ -972,11 +975,9 @@
                             },
                             dataType: "json",
                             success: function(response) {
-                                Swal.fire({
+                                Toast.fire({
                                     icon: 'success',
-                                    title: 'Berhasil',
-                                    text: 'Addon berhasil dihapus',
-                                    showConfirmButton: false,
+                                    title: 'Addon berhasil dihapus'
                                 });
                                 setTimeout(() => {
                                     location.reload();
@@ -1074,11 +1075,9 @@
                     data: examinationAddonsFormData,
                     dataType: "json",
                     success: function(response) {
-                        Swal.fire({
+                        Toast.fire({
                             icon: 'success',
-                            title: 'Berhasil',
-                            text: 'Addon berhasil ditambahkan',
-                            showConfirmButton: false,
+                            title: 'Addon berhasil ditambahkan'
                         });
                         setTimeout(() => {
                             location.reload();
