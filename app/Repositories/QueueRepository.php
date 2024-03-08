@@ -15,15 +15,9 @@ use Illuminate\Support\Facades\Session;
 class QueueRepository implements QueueInterface
 {
     private $reservation;
-
-    private $configShift;
-
     private $doctor;
-
     private $customer;
-
     private $branch;
-
     private $doctorSchedule;
 
     public function __construct(
@@ -36,7 +30,6 @@ class QueueRepository implements QueueInterface
     ) {
         $this->reservation = $reservation;
         $this->doctor = $doctor;
-        $this->configShift = $configShift;
         $this->customer = $customer;
         $this->branch = $branch;
         $this->doctorSchedule = $doctorSchedule;
@@ -79,7 +72,7 @@ class QueueRepository implements QueueInterface
             ->where('date', Carbon::now('Asia/Jakarta')->format('Y-m-d'))
             ->first();
 
-        if (! $reservations || ! $doctorSchedule) {
+        if (!$reservations || !$doctorSchedule) {
             return [];
         }
 
@@ -93,7 +86,7 @@ class QueueRepository implements QueueInterface
     public function getReservationById($id)
     {
         $reservation = $this->reservation->where('id', $id)
-            ->with('customer', 'branch', 'treatment', 'examination')
+            ->with('customer', 'branch', 'examination')
             ->first();
 
         return $reservation;

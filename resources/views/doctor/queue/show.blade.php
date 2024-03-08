@@ -57,47 +57,10 @@
                             </div>
                         </div>
                     </div>
-                    {{-- <div>
-                        <div>
-                            <h3 class="text-xs text-gray-500 font-semibold uppercase mb-6">DATA PEMBAYARAN</h3>
-                            <div class="space-y-4">
-                                <div>
-                                    <h4 class="font-semibold mb-2">Deposit</h4>
-                                    <p>
-                                        {{ number_format($reservation->deposit, 0, ',', '.') }}
-                                    </p>
-                                </div>
-
-                                <div>
-                                    <h4 class="font-semibold mb-2">Akun Bank</h4>
-                                    <p>
-                                        {{ $reservation->customer_bank_account }}
-                                    </p>
-                                    <p>
-                                        {{ $reservation->customer_bank_account_name }}
-                                    </p>
-                                </div>
-
-                                <div>
-                                    <h4 class="font-semibold mb-2">Tanggal Transfer</h4>
-                                    <p>
-                                        {{ date('d/m/Y', strtotime($reservation->transfer_date)) }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
                     <div>
                         <div>
                             <h3 class="text-xs text-gray-500 font-semibold uppercase mb-6">DATA LAYANAN</h3>
                             <div class="space-y-4">
-                                <div>
-                                    <h4 class="font-semibold mb-2">Layanan</h4>
-                                    <p>
-                                        {{ $reservation->treatment->name }}
-                                    </p>
-                                </div>
-
                                 <div>
                                     <h4 class="font-semibold mb-2">Kontrol</h4>
                                     <p>

@@ -26,12 +26,6 @@
         }
     </style>
 
-    {{-- <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
-        rel="stylesheet"> --}}
-
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
 
@@ -52,13 +46,13 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased text-xs 2xl:text-sm overflow-hidden">
+<body class="font-sans antialiased text-xs 2xl:text-sm overflow-hidden min-h-screen">
 
     <div class="bg-[#F7FAFC]">
         @include('admin.layouts.sidebar')
         @include('admin.layouts.header')
         <div class="p-4 sm:ml-64 h-screen overflow-y-auto">
-            <div class="p-4">
+            <div class="p-4 mb-12">
                 {{ $slot }}
             </div>
         </div>

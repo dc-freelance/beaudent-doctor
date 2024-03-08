@@ -28,15 +28,15 @@ class QueueController extends Controller
     {
         $queues = $this->queue->getAllReservation();
 
-        if ($request->has('customer') && ! empty($queues)) {
+        if ($request->has('customer') && !empty($queues)) {
             $queues = $queues->where('customer_id', $request->customer);
         }
 
-        if ($request->has('treatment') && ! empty($queues)) {
+        if ($request->has('treatment') && !empty($queues)) {
             $queues = $queues->where('treatment_id', $request->treatment);
         }
 
-        if ($request->has('time') && ! empty($queues)) {
+        if ($request->has('time') && !empty($queues)) {
             $queues = $queues->where('request_time', '>=', $request->time);
         }
 
@@ -48,9 +48,6 @@ class QueueController extends Controller
                 })
                 ->addColumn('branch', function ($data) {
                     return $data->branch->name;
-                })
-                ->addColumn('treatment', function ($data) {
-                    return $data->treatment->name;
                 })
                 ->addColumn('request_date', function ($data) {
                     return Carbon::parse($data->request_date)->format('d-m-Y');
