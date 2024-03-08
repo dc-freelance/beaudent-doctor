@@ -62,22 +62,6 @@
                 });
 
                 $('select.select-input').select2();
-
-                // $('#customer').on('change', function() {
-                //     $('#reservationTable').DataTable().ajax.url('{{ route('doctor.queues.index') }}?customer=' +
-                //         $(this).val()).load();
-                // });
-
-                // $('#treatment').on('change', function() {
-                //     $('#reservationTable').DataTable().ajax.url(
-                //         '{{ route('doctor.queues.index') }}?treatment=' +
-                //         $(this).val()).load();
-                // });
-
-                // $('#time').on('change', function() {
-                //     $('#reservationTable').DataTable().ajax.url('{{ route('doctor.queues.index') }}?time=' +
-                //         $(this).val()).load();
-                // });
             });
         </script>
     @endpush

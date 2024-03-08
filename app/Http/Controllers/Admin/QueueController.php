@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Interfaces\CustomerInterface;
 use App\Interfaces\QueueInterface;
-use App\Interfaces\TreatmentInterface;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -17,28 +16,15 @@ class QueueController extends Controller
 
     private $treatment;
 
-    public function __construct(QueueInterface $queue, CustomerInterface $customer, TreatmentInterface $treatment)
+    public function __construct(QueueInterface $queue, CustomerInterface $customer)
     {
         $this->queue = $queue;
         $this->customer = $customer;
-        $this->treatment = $treatment;
     }
 
     public function index(Request $request)
     {
         $queues = $this->queue->getAllReservation();
-
-        if ($request->has('customer') && !empty($queues)) {
-            $queues = $queues->where('customer_id', $request->customer);
-        }
-
-        if ($request->has('treatment') && !empty($queues)) {
-            $queues = $queues->where('treatment_id', $request->treatment);
-        }
-
-        if ($request->has('time') && !empty($queues)) {
-            $queues = $queues->where('request_time', '>=', $request->time);
-        }
 
         if ($request->ajax()) {
             return datatables()
@@ -66,9 +52,8 @@ class QueueController extends Controller
         }
 
         $customers = $this->customer->getAll();
-        $treatments = $this->treatment->getAll();
 
-        return view('doctor.queue.index', compact('customers', 'treatments'));
+        return view('doctor.queue.index', compact('customers'));
     }
 
     public function updateExaminationStatus($id, Request $request)
