@@ -25,7 +25,7 @@
                 <tr>
                     <th>No</th>
                     <th>Tanggal</th>
-                    <th>Waktu</th>
+                    {{-- <th>Waktu</th> --}}
                     <th>Cabang</th>
                     <th>Status</th>
                 </tr>
@@ -48,10 +48,6 @@
                         {
                             data: 'date',
                             name: 'date'
-                        },
-                        {
-                            data: 'time',
-                            name: 'time'
                         },
                         {
                             data: 'branch',

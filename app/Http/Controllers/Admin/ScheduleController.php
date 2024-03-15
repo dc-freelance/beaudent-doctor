@@ -22,16 +22,16 @@ class ScheduleController extends Controller
             return datatables()
                 ->of($result)
                 ->addColumn('date', function ($data) {
-                    return date('Y-m-d', strtotime($data->created_at));
+                    return date('Y-m-d', strtotime($data->date));
                 })
-                ->addColumn('time', function ($data) {
-                    return date('H:i', strtotime($data->created_at));
-                })
+                // ->addColumn('time', function ($data) {
+                //     return date('H:i', strtotime($data->created_at));
+                // })
                 ->addColumn('branch', function ($data) {
                     return $data->branch->name;
                 })
                 ->addColumn('status', function ($data) {
-                    $status = date('Y-m-d H:i', strtotime($data->created_at)) == date('Y-m-d H:i') ? 'now' : (date('Y-m-d H:i', strtotime($data->created_at)) < date('Y-m-d H:i') ? 'done' : 'upcoming');
+                    $status = date('Y-m-d H:i', strtotime($data->date)) == date('Y-m-d H:i') ? 'now' : (date('Y-m-d H:i', strtotime($data->date)) < date('Y-m-d H:i') ? 'done' : 'upcoming');
 
                     return view('admin.schedule._status', compact('status'));
                 })
