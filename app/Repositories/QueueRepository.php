@@ -45,8 +45,9 @@ class QueueRepository implements QueueInterface
         $reservations = [];
         if ($configShift) {
             $reservations = $this->reservation
+                ->where('doctor_id', Session::get('doctor')->id)
                 ->where('request_date', Carbon::now('Asia/Jakarta')->format('Y-m-d'))
-                ->where('status', 'Confirm')
+                ->where('status', 'Queue')
                 ->where('request_time', '>=', $configShift->start_time)
                 ->where('request_time', '<=', $configShift->end_time)
                 ->where('examination_status', 0)
@@ -63,22 +64,22 @@ class QueueRepository implements QueueInterface
             });
         }
 
-        $doctor = $this->doctor
-            ->where('id', Session::get('doctor')->id)
-            ->first();
+        // $doctor = $this->doctor
+        //     ->where('id', Session::get('doctor')->id)
+        //     ->first();
 
-        $doctorSchedule = $this->doctorSchedule
-            ->where('doctor_id', $doctor->id)
-            ->where('date', Carbon::now('Asia/Jakarta')->format('Y-m-d'))
-            ->first();
+        // $doctorSchedule = $this->doctorSchedule
+        //     ->where('doctor_id', $doctor->id)
+        //     ->where('date', Carbon::now('Asia/Jakarta')->format('Y-m-d'))
+        //     ->first();
 
-        if (!$reservations || !$doctorSchedule) {
-            return [];
-        }
+        // if (!$reservations || !$doctorSchedule) {
+        //     return [];
+        // }
 
-        $reservations = $reservations->filter(function ($reservation) use ($doctorSchedule) {
-            return $reservation->branch_id == $doctorSchedule->branch_id;
-        });
+        // $reservations = $reservations->filter(function ($reservation) use ($doctorSchedule) {
+        //     return $reservation->branch_id == $doctorSchedule->branch_id;
+        // });
 
         return $reservations;
     }
