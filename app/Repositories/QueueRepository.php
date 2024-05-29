@@ -102,7 +102,7 @@ class QueueRepository implements QueueInterface
     {
         $reservations = $this->reservation
             ->where([
-                ['status', 'Confirm'],
+                ['status', 'Queue'],
                 ['request_date', Carbon::now('Asia/Jakarta')->format('Y-m-d')],
                 ['examination_status', 0],
             ])
