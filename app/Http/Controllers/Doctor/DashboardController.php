@@ -31,7 +31,7 @@ class DashboardController extends Controller
         $totalFee = $stats['total_fee'];
         $totalPatient = $stats['total_patient'];
         $totalExamination = $stats['total_examination'];
-        $totalWaitingList = $this->queue->getWaitingList()->count();
+        $totalWaitingList = $this->queue->getWaitingList() === 0 ? 0 : $this->queue->getWaitingList()->count();
 
         return view('doctor.dashboard.index', compact('totalFeeToday', 'totalFee', 'totalPatient', 'totalExamination', 'totalWaitingList'));
     }
