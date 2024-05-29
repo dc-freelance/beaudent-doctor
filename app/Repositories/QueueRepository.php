@@ -100,10 +100,23 @@ class QueueRepository implements QueueInterface
 
     public function getWaitingList()
     {
+        $currentTime = Carbon::now('Asia/Jakarta')->format('H:i');
+        $configShift = ConfigShift::where([
+            ['start_time', '<=', $currentTime],
+            ['end_time', '>=', $currentTime],
+        ])->first();
+
+        if (!$configShift) {
+            return 0;
+        };
+
         $reservations = $this->reservation
             ->where([
                 ['status', 'Queue'],
                 ['request_date', Carbon::now('Asia/Jakarta')->format('Y-m-d')],
+                ['request_time', '>=', $configShift->start_time],
+                ['request_time', '<=', $configShift->end_time],
+                ['doctor_id', Session::get('doctor')->id],
                 ['examination_status', 0],
             ])
             ->get();
