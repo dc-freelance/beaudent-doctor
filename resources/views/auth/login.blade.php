@@ -9,7 +9,7 @@
     <form method="POST" action="{{ route('sign-in') }}">
         @csrf
         <div class="lg:mt-[15vh] mt-[10vh]">  
-            <img src="{{ asset('assets/images/logo.png') }}" class="max-w-[200px] mx-auto" alt="">
+            <img src="{{ asset('assets/image/logo.jpg') }}" class="max-w-[200px] mx-auto" alt="">
             <div class="lg:p-12 p-5 rounded-md lg:max-w-lg max-w-full mx-auto space-y-5">        
                 <div class="head">
                     <div class="space-y-3">
