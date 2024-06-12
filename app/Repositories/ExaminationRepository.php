@@ -6,6 +6,7 @@ use App\Interfaces\ExaminationInterface;
 use App\Models\Customer;
 use App\Models\Examination;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Session;
 
 class ExaminationRepository implements ExaminationInterface
 {
@@ -80,7 +81,9 @@ class ExaminationRepository implements ExaminationInterface
 
     public function getAllExaminationGroupByCustomer()
     {
-        $customers = $this->customer->with('examinations')->has('examinations')->get();
+        $customers = $this->customer->whereHas('examinations', function ($query) {
+            $query->where('doctor_id', Session::get('doctor')->id);
+        })->get();
 
         return $customers;
     }

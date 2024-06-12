@@ -17,8 +17,8 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
         <x-card-stat title="Total Fee" :data="'Rp ' . number_format($totalFee, 0, ',', '.')" />
-        <x-card-stat title="Total Pasien" :data="$totalPatient" />
-        <x-card-stat title="Total Pemeriksaan" :data="$totalExamination" />
+        <x-card-stat title="Total Pasien Ditangani" :data="$totalPatient" />
+        <x-card-stat title="Total Pemeriksaan Terbayar" :data="$totalExamination" />
     </div>
 
     <x-card-container>

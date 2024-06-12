@@ -37,48 +37,40 @@ class QueueRepository implements QueueInterface
 
     public function getAllReservation()
     {
-        $currentTime = Carbon::now('Asia/Jakarta')->format('H:i');
-        $configShift = ConfigShift::where([
-            ['start_time', '<=', $currentTime],
-            ['end_time', '>=', $currentTime],
-        ])->first();
         $reservations = [];
-        if ($configShift) {
-            $reservations = $this->reservation
-                ->where('request_date', Carbon::now('Asia/Jakarta')->format('Y-m-d'))
-                ->where('status', 'Confirm')
-                ->where('request_time', '>=', $configShift->start_time)
-                ->where('request_time', '<=', $configShift->end_time)
-                ->where('examination_status', 0)
-                ->orderBy('request_time', 'asc')
-                ->get();
+        $reservations = $this->reservation
+            ->where('doctor_id', Session::get('doctor')->id)
+            ->where('request_date', Carbon::now('Asia/Jakarta')->format('Y-m-d'))
+            ->where('status', 'Queue')
+            ->where('examination_status', 0)
+            ->orderBy('request_time', 'asc')
+            ->get();
 
-            $reservations->map(function ($reservation) {
-                $reservation->customer = $this->customer
-                    ->where('id', $reservation->customer_id)
-                    ->first();
-                $reservation->branch = $this->branch
-                    ->where('id', $reservation->branch_id)
-                    ->first();
-            });
-        }
-
-        $doctor = $this->doctor
-            ->where('id', Session::get('doctor')->id)
-            ->first();
-
-        $doctorSchedule = $this->doctorSchedule
-            ->where('doctor_id', $doctor->id)
-            ->where('date', Carbon::now('Asia/Jakarta')->format('Y-m-d'))
-            ->first();
-
-        if (!$reservations || !$doctorSchedule) {
-            return [];
-        }
-
-        $reservations = $reservations->filter(function ($reservation) use ($doctorSchedule) {
-            return $reservation->branch_id == $doctorSchedule->branch_id;
+        $reservations->map(function ($reservation) {
+            $reservation->customer = $this->customer
+                ->where('id', $reservation->customer_id)
+                ->first();
+            $reservation->branch = $this->branch
+                ->where('id', $reservation->branch_id)
+                ->first();
         });
+
+        // $doctor = $this->doctor
+        //     ->where('id', Session::get('doctor')->id)
+        //     ->first();
+
+        // $doctorSchedule = $this->doctorSchedule
+        //     ->where('doctor_id', $doctor->id)
+        //     ->where('date', Carbon::now('Asia/Jakarta')->format('Y-m-d'))
+        //     ->first();
+
+        // if (!$reservations || !$doctorSchedule) {
+        //     return [];
+        // }
+
+        // $reservations = $reservations->filter(function ($reservation) use ($doctorSchedule) {
+        //     return $reservation->branch_id == $doctorSchedule->branch_id;
+        // });
 
         return $reservations;
     }
@@ -101,8 +93,9 @@ class QueueRepository implements QueueInterface
     {
         $reservations = $this->reservation
             ->where([
-                ['status', 'Confirm'],
+                ['status', 'Queue'],
                 ['request_date', Carbon::now('Asia/Jakarta')->format('Y-m-d')],
+                ['doctor_id', Session::get('doctor')->id],
                 ['examination_status', 0],
             ])
             ->get();
